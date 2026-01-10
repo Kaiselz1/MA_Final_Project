@@ -2,7 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:pos_lab/screens/login_screen.dart';
-
+import 'package:pos_lab/screens/profile_screen.dart';
+import 'package:pos_lab/screens/cart_screen.dart';
 void main() {
   runApp(
     DevicePreview(enabled: kDebugMode, builder: (context) => const MyApp()),
@@ -15,7 +16,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const LoginScreen(),
+
+      home: const CartScreen(),
+// Change to Test
+
+
       builder: (context, child) => DevicePreview.appBuilder(context, child),
       useInheritedMediaQuery: true,
       debugShowCheckedModeBanner: false,
