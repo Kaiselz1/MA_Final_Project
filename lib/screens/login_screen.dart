@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:pos_lab/screens/register_screen.dart";
 import "package:pos_lab/style/color.dart";
+import 'package:pos_lab/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _darkenToTop = false;
   bool _obscurePassword = true;
   bool _rememberMe = false;
+  bool _showForm = false;
 
   @override
   Widget build(BuildContext context) {
@@ -373,10 +375,19 @@ class _LoginScreenState extends State<LoginScreen> {
             right: 20,
             child: ElevatedButton(
               onPressed: () {
-                setState(() {
-                  _logoMoved = true;
-                  _darkenToTop = true;
-                });
+                if (!_showForm) {
+                  setState(() {
+                    _logoMoved = true;
+                    _darkenToTop = true;
+                    _showForm = true;
+                  });
+                } else {
+                  // SECOND CLICK → go to HomeScreen
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const HomeScreen()),
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColor.col4,

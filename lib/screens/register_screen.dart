@@ -17,7 +17,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: Stack(
@@ -50,7 +49,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
 
-          // Logo (smaller like Sign In)
           Positioned(
             top: 50,
             left: 0,
@@ -79,7 +77,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
 
-          // Welcome Text
           Positioned(
             top: 190,
             left: 20,
@@ -122,7 +119,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
 
-          // Gradient Form Container
           Positioned(
             top: 290,
             child: Container(
@@ -162,7 +158,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      // Username
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: 'Username',
@@ -191,7 +186,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 25),
 
-                      // Email
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: 'Email',
@@ -263,7 +257,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 25),
 
-                      // Confirm Password
                       TextFormField(
                         obscureText: _obscureConfirmPassword,
                         decoration: InputDecoration(
@@ -307,7 +300,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 25),
 
-                      // Register Button
                       ElevatedButton(
                         onPressed: () {
                           // TODO: handle register logic
@@ -331,7 +323,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
 
-          // Bottom Sign In Link
           Positioned(
             bottom: 60,
             left: 0,
