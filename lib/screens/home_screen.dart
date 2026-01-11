@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/screens/category_screen.dart';
+import 'package:pos_lab/screens/cart_screen.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
@@ -135,6 +136,14 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: AppBottomNav(
         currentIndex: _currentIndex,
         onTap: (index) {
+          if (index == _currentIndex) return;
+          if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const CartScreen()),
+            );
+            return;
+          }
           setState(() {
             _currentIndex = index;
           });
