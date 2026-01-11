@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
-import 'package:pos_lab/screens/cart_screen.dart';
+import 'package:pos_lab/screens/home_screen.dart';
 import 'package:pos_lab/style/color.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -24,7 +23,35 @@ class _ProfileScreen extends State<ProfileScreen> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.chevron_left, color: AppColor.col4),
-          onPressed: () => Navigator.of(context).maybePop(),
+          onPressed: () => 
+          Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: const Duration(milliseconds: 200),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const HomeScreen(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(-1.0, 0.0);
+                            const end = Offset.zero;
+                            const curve = Curves
+                                .easeOutCubic; // Smooth decelerating curve
+
+                            var tween = Tween(
+                              begin: begin,
+                              end: end,
+                            ).chain(CurveTween(curve: curve));
+                            var offsetAnimation = animation.drive(tween);
+
+                            return SlideTransition(
+                              position: offsetAnimation,
+                              child: child,
+                            );
+                          },
+                    ),
+          )
+
+          ,
         ),
         title: const Text(
           "Profile",
@@ -137,76 +164,6 @@ class _ProfileScreen extends State<ProfileScreen> {
           ),
         ),
       ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        notchMargin: 8,
-        color: Colors.white,
-        elevation: 12,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 6),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: BottomNavItem(icon: Icons.home_filled,
-                 onTap: () {
-                  
-                    //add home screen
-
-                },
-                
-                
-                ),
-
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: BottomNavItem(icon: CupertinoIcons.cart,
-                 onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => const CartScreen()),
-                  );
-                },
-                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: BottomNavItem(icon: Icons.history,
-                onTap: () {
-
-                 //History Screen
-
-                },
-                
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: BottomNavItem(icon: CupertinoIcons.heart_fill,
-                 onTap: () {
-
-                  //Favorite Screen
-
-                },
-                 
-                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: BottomNavItem(icon: Icons.person,
-                onTap: () {
-                 
-                },
-                ),
-
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 
@@ -254,40 +211,5 @@ class _ProfileScreen extends State<ProfileScreen> {
     );
   }
 
-
-//Change Bottom Nav Item
-
-
-
-
-}
-
-
-class BottomNavItem extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onTap;
-  final bool isActive;
-
-  const BottomNavItem({
-    super.key,
-    required this.icon,
-    required this.onTap,
-    this.isActive = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Padding(
-        padding: const EdgeInsets.all(6),
-        child: Icon(
-          icon,
-          size: 25,
-          color: isActive ? AppColor.col4 : Colors.black,
-        ),
-      ),
-    );
-  }
+  //Change Bottom Nav Item
 }

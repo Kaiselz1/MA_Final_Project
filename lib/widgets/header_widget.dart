@@ -132,3 +132,60 @@ class AppHeader extends StatelessWidget {
     );
   }
 }
+class AppTitleHeader extends StatelessWidget {
+  final String title;
+  final VoidCallback? onBackTap;
+
+  const AppTitleHeader({
+    super.key,
+    required this.title,
+    this.onBackTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 120, 
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [AppColor.col6, AppColor.col5],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: onBackTap ?? () => Navigator.of(context).maybePop(),
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    color: AppColor.col4,
+                    size: 26,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: AppColor.col4,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
+                ),
+                const Spacer(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
