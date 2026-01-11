@@ -1,17 +1,17 @@
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
-import "package:pos_lab/screens/checkout_screen.dart";
+import "package:pos_lab/screens/cart_screen.dart";
 import "package:pos_lab/style/color.dart";
 import "profile_screen.dart";
 
-class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+class CheckoutScreen extends StatefulWidget {
+  const CheckoutScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<CheckoutScreen> createState() => _CheckoutScreen();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CheckoutScreen extends State<CheckoutScreen> {
   bool isLoading = true;
 
   final List<CartItemModel> items = [
@@ -77,10 +77,13 @@ class _CartScreenState extends State<CartScreen> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.chevron_left, color: AppColor.col4),
-          onPressed: () => Navigator.of(context).maybePop(),
+          onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const CartScreen()),
+                  ),
         ),
         title: const Text(
-          "Cart",
+          "Checkout",
           style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
         ),
       ),
@@ -101,110 +104,77 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       )),
 
-        
+                  const SizedBox(height: 12),
 
-                 
-                  const SizedBox(height: 20),
-
-                  SizedBox(
-                    height: 46,
-                    child: ElevatedButton(
-                      onPressed: items.isEmpty ? null : () {
-                        Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => const CheckoutScreen()),
-                  );},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColor.col4,
-                        elevation: 1,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        
-                      ),
-                      child: const Text(
-                        "Proceed to Checkout",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
+                  
                 ],
               ),
       ),
 
       
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        notchMargin: 8,
-        color: Colors.white,
-        elevation: 12,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 6),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: BottomNavItem(icon: Icons.home_filled,
-                 onTap: () {
-                  
-                    //add home screen
+     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+bottomNavigationBar: BottomAppBar(
+  notchMargin: 8,
+  color: Colors.white,
+  elevation: 12,
+  child: Padding(
+    padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
 
-                },
-                
-                
-                ),
 
+        const SizedBox(height: 6),
+        // Summary
+        _SummaryRow(
+          label: "Sub total",
+          value: "\$${subTotal.toStringAsFixed(2)}",
+        ),
+        const SizedBox(height: 6),
+        _SummaryRow(
+          label: "Delivery Charge",
+          value: "\$${deliveryCharge.toStringAsFixed(2)}",
+        ),
+
+        const SizedBox(height: 12),
+        const Divider(height: 1, color: Colors.black12),
+        const SizedBox(height: 12),
+
+        _SummaryRow(
+          label: "Grand Total",
+          value: "\$${grandTotal.toStringAsFixed(2)}",
+          bold: true,
+        ),
+
+        const SizedBox(height: 14),
+
+        // Button
+        SizedBox(
+          width: double.infinity,
+          height: 46,
+          child: ElevatedButton(
+            onPressed: items.isEmpty ? null : () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColor.col4,
+              elevation: 1,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: BottomNavItem(icon: CupertinoIcons.cart,
-                 onTap: () {
-
-                },
-                 ),
+            ),
+            child: const Text(
+              "Confirm Payment",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: BottomNavItem(icon: Icons.history,
-                onTap: () {
-
-                 //History Screen
-
-                },
-                
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: BottomNavItem(icon: CupertinoIcons.heart_fill,
-                 onTap: () {
-
-                  //Favorite Screen
-
-                },
-                 
-                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: BottomNavItem(icon: Icons.person,
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => const ProfileScreen()),
-                  );
-                },
-                ),
-
-              ),
-            ],
+            ),
           ),
         ),
-      ),
+      ],
+    ),
+  ),
+),
+
     );
   }
 }
@@ -233,6 +203,31 @@ class _QtyButton extends StatelessWidget {
   }
 }
 
+
+
+class _SummaryRow extends StatelessWidget {
+  const _SummaryRow({
+    required this.label,
+    required this.value,
+    this.bold = false,
+  });
+
+  final String label;
+  final String value;
+  final bool bold;
+
+  @override
+  Widget build(BuildContext context) {
+    final weight = bold ? FontWeight.w700 : FontWeight.w500;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: TextStyle(fontWeight: weight)),
+        Text(value, style: TextStyle(fontWeight: weight)),
+      ],
+    );
+  }
+}
 
 
 
