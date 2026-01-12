@@ -16,7 +16,7 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: AppColor.col8,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -160,7 +160,7 @@ class _SettingScreenState extends State<SettingScreen> {
               Center(
                 child: SizedBox(
                   width: 200,
-                  height: 55,
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushAndRemoveUntil(
@@ -221,20 +221,17 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
-
-
-  // Helper Widget for Contact Items
   Widget _buildContactItem(IconData icon, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: [
           CircleAvatar(
-            radius: 18, // Increased radius
+            radius: 18,
             backgroundColor: AppColor.col5.withOpacity(0.1),
             child: Icon(
               icon,
-              size: 22, // Increased icon size
+              size: 25,
               color: AppColor.col5,
             ),
           ),
@@ -244,7 +241,7 @@ class _SettingScreenState extends State<SettingScreen> {
               text,
               style: TextStyle(
                 color: Colors.grey[700],
-                fontSize: 16, // Increased font size
+                fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
             ),
