@@ -24,9 +24,9 @@ class CategoryCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
+              color: Colors.black38,
+              blurRadius: 2,
+              offset: const Offset(2, 2),
             ),
           ],
         ),
@@ -37,9 +37,8 @@ class CategoryCard extends StatelessWidget {
               iconPath,
               height: 70,
               width: 70,
-              // Applying the brown color theme seen in Artboard 8
-              colorFilter: const ColorFilter.mode(
-                Color(0xFF6B4F3F), 
+              colorFilter: ColorFilter.mode(
+                AppColor.col5, 
                 BlendMode.srcIn,
               ),
             ),
@@ -47,10 +46,10 @@ class CategoryCard extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF6B4F3F),
+                color: AppColor.col5,
               ),
             ),
           ],

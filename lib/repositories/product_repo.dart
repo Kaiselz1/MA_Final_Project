@@ -11,7 +11,7 @@ class ProductRepo {
       price: 1.50,
       stock: 100,
       description:
-          "A refreshing iced latte made with espresso and chilled milk.",
+          "A refreshing iced latte crafted from rich, freshly brewed espresso poured over ice and blended smoothly with cold, creamy milk, creating a perfectly balanced drink that is light, energizing, and delightfully smooth—ideal for cooling down while enjoying a bold yet mellow coffee flavor.",
     ),
 
     Product(

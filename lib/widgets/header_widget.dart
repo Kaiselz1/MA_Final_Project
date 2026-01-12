@@ -27,7 +27,6 @@ class AppHeader extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // Header background + Row
           Container(
             padding: const EdgeInsets.fromLTRB(20, 50, 20, 40),
             decoration: BoxDecoration(
@@ -111,15 +110,15 @@ class AppHeader extends StatelessWidget {
                 child: TextField(
                   onChanged: onSearchChanged,
                   decoration: InputDecoration(
-                    icon: Icon(Icons.search, size: 30, color: AppColor.col5),
+                    icon: Icon(Icons.search, size: 35, color: AppColor.col5),
                     hintText: 'Search drink',
                     border: InputBorder.none,
                     suffixIcon: IconButton(
                       onPressed: onCategoryTap,
                       icon: SvgPicture.asset(
                         'assets/icons/category.svg',
-                        width: 25,
-                        height: 25,
+                        width: 30,
+                        height: 30,
                         color: AppColor.col5,
                       ),
                     ),
