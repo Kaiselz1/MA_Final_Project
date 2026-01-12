@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/screens/category_screen.dart';
-<<<<<<< HEAD
-import 'package:pos_lab/screens/cart_screen.dart';
-=======
 import 'package:pos_lab/screens/product_detail_screen.dart';
->>>>>>> 0168936 (update)
 import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
 import 'package:pos_lab/widgets/navigate_widget.dart';
 import 'package:pos_lab/widgets/product_grid_widget.dart';
+import 'package:pos_lab/widgets/search_widget.dart';
 import 'package:pos_lab/widgets/slider_widget.dart';
 import 'package:pos_lab/widgets/suggestion_widget.dart';
 
@@ -24,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Set<int> favoriteIds = {};
-  int _currentIndex = 0;
 
   void addToFavorite(Product product) async {
     setState(() {
@@ -77,17 +73,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 },
-                onSearchChanged: (value) {
-                  print("Searching: $value");
-                },
-                onCategoryTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CategoryScreen(),
-                    ),
-                  );
-                },
               ),
 
               Padding(
@@ -137,25 +122,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
+          SearchBarWidget(
+            top: 110,
+            onSearchChanged: (value) {
+              print("Searching: $value");
+            },
+            onCategoryTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CategoryScreen()),
+              );
+            },
+          ),
         ],
-      ),
-
-      // Navigation Bar
-      bottomNavigationBar: AppBottomNav(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          if (index == _currentIndex) return;
-          if (index == 1) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => const CartScreen()),
-            );
-            return;
-          }
-          setState(() {
-            _currentIndex = index;
-          });
-        },
       ),
     );
   }

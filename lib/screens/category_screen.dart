@@ -15,7 +15,6 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreen extends State<CategoryScreen> {
   Set<int> favoriteIds = {};
-  int _currentIndex = 0;
   String _selectedCategoryPath = "category";
 
   final List<Map<String, String>> categoryData = [
@@ -54,7 +53,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                 name: 'John Noon',
                 email: 'johnnoon77@gmail.com',
                 onMenuTap: () {
-                 Navigator.push(
+                  Navigator.push(
                     context,
                     PageRouteBuilder(
                       transitionDuration: const Duration(milliseconds: 200),
@@ -148,16 +147,6 @@ class _CategoryScreen extends State<CategoryScreen> {
             ],
           ),
         ],
-      ),
-
-      // Navigation Bar
-      bottomNavigationBar: AppBottomNav(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
       ),
     );
   }

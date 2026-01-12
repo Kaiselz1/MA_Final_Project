@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pos_lab/style/color.dart';
 
 class AppHeader extends StatelessWidget {
@@ -86,46 +85,6 @@ class AppHeader extends StatelessWidget {
               ],
             ),
           ),
-
-          // Floating search bar (optional)
-          if (showSearchBar)
-            Positioned(
-              bottom: -25,
-              left: 20,
-              right: 20,
-              child: Container(
-                height: 50,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 6,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: TextField(
-                  onChanged: onSearchChanged,
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.search, size: 35, color: AppColor.col5),
-                    hintText: 'Search drink',
-                    border: InputBorder.none,
-                    suffixIcon: IconButton(
-                      onPressed: onCategoryTap,
-                      icon: SvgPicture.asset(
-                        'assets/icons/category.svg',
-                        width: 30,
-                        height: 30,
-                        color: AppColor.col5,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
     );

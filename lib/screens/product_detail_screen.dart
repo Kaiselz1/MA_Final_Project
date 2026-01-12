@@ -165,7 +165,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   Widget _buildCircleBtn(IconData icon, VoidCallback onTap) {
     return Container(
-      decoration: BoxDecoration(color: Colors.white24, shape: BoxShape.circle),
+      decoration: BoxDecoration(color: Colors.white38, shape: BoxShape.circle),
       child: IconButton(
         icon: Icon(icon, color: Colors.white, size: 20),
         onPressed: onTap,
@@ -175,7 +175,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   Widget _buildAnimatedHeart() {
     return Container(
-      decoration: BoxDecoration(color: Colors.white24, shape: BoxShape.circle),
+      decoration: BoxDecoration(color: Colors.white38, shape: BoxShape.circle),
       child: TweenAnimationBuilder<double>(
         tween: Tween(begin: 1.0, end: isFavorite ? 1.3 : 1.0),
         duration: const Duration(milliseconds: 200),
@@ -200,8 +200,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           "Quantity",
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(width: 20),
-        _qtyBtn(Icons.add, Colors.cyan, () => setState(() => quantity++)),
+        SizedBox(width: 20),
+        _qtyBtn(Icons.remove, Colors.red, () {
+          if (quantity > 1) setState(() => quantity--);
+        }
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Text(
@@ -209,9 +212,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
-        _qtyBtn(Icons.remove, Colors.red, () {
-          if (quantity > 1) setState(() => quantity--);
-        }),
+        // _qtyBtn(Icons.remove, Colors.red, () {
+        //   if (quantity > 1) setState(() => quantity--);
+        // }
+        _qtyBtn(Icons.add, Colors.cyan, () => setState(() => quantity++)),
       ],
     );
   }
@@ -237,7 +241,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           child: ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFA68A64),
+              backgroundColor: AppColor.col4,
               foregroundColor: Colors.white,
               elevation: 0,
               shadowColor: Colors.black38,
@@ -259,7 +263,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           child: ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF6D5D51),
+              backgroundColor: AppColor.col5,
               foregroundColor: Colors.white,
               elevation: 0,
               shadowColor: Colors.black38,

@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:pos_lab/screens/register_screen.dart";
 import "package:pos_lab/style/color.dart";
-import 'package:pos_lab/screens/home_screen.dart';
+import "package:pos_lab/widgets/nav_wiget.dart";
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -385,7 +385,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   // SECOND CLICK → go to HomeScreen
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (_) => const HomeScreen()),
+                    MaterialPageRoute(builder: (_) => const NavWiget()),
                   );
                 }
               },
