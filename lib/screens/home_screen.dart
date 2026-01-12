@@ -6,7 +6,6 @@ import 'package:pos_lab/screens/product_detail_screen.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
-import 'package:pos_lab/widgets/navigate_widget.dart';
 import 'package:pos_lab/widgets/product_grid_widget.dart';
 import 'package:pos_lab/widgets/search_widget.dart';
 import 'package:pos_lab/widgets/slider_widget.dart';

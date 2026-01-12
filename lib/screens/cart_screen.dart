@@ -6,7 +6,6 @@ import "package:pos_lab/screens/checkout_screen.dart";
 import "package:pos_lab/screens/setting_screen.dart";
 import "package:pos_lab/style/color.dart";
 import "package:pos_lab/widgets/header_widget.dart";
-import "package:pos_lab/widgets/navigate_widget.dart";
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
