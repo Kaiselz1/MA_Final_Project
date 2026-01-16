@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:pos_lab/controllers/main_controller.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/screens/category_screen.dart';
 
@@ -35,7 +37,7 @@ class SearchBarWidget extends StatelessWidget {
             ),
           ],
         ),
-        
+
         child: TextField(
           onChanged: onSearchChanged,
           decoration: InputDecoration(
@@ -43,18 +45,16 @@ class SearchBarWidget extends StatelessWidget {
             hintText: 'Search drink',
             border: InputBorder.none,
             suffixIcon: IconButton(
-              onPressed: onCategoryTap ??
+              onPressed:
+                  onCategoryTap ??
                   () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const CategoryScreen()),
-                    );
+                    Get.find<MainController>().currentIndex.value = 4;
+                    
                   },
               icon: SvgPicture.asset(
                 'assets/icons/category.svg',
-                width: 25,
-                height: 25,
+                width: 35,
+                height: 35,
                 color: AppColor.col5,
               ),
             ),

@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pos_lab/controllers/counter_controller.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/screens/category_screen.dart';
@@ -18,8 +21,11 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
   Set<int> favoriteIds = {};
+      final CounterController counterController = Get.put(CounterController());
+
 
   void addToFavorite(Product product) async {
     setState(() {
@@ -32,7 +38,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    if (kDebugMode) {
+      print('object');
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       backgroundColor: AppColor.col8,
 
@@ -127,14 +143,17 @@ class _HomeScreenState extends State<HomeScreen> {
               print("Searching: $value");
             },
             onCategoryTap: () {
-              Navigator.push(
-                context,
+              Navigator.of(context, rootNavigator: false).push(
                 MaterialPageRoute(builder: (_) => const CategoryScreen()),
               );
+
             },
           ),
         ],
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

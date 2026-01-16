@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pos_lab/controllers/counter_controller.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
+import 'package:flutter/foundation.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -10,9 +13,22 @@ class FavoriteScreen extends StatefulWidget {
   State<FavoriteScreen> createState() => _FavoriteScreen();
 }
 
-class _FavoriteScreen extends State<FavoriteScreen> {
+class _FavoriteScreen extends State<FavoriteScreen>
+    with AutomaticKeepAliveClientMixin {
+  final CounterController counterController = Get.put(CounterController());
+
+  @override
+  void initState() {
+    if (kDebugMode) {
+      print('object');
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       backgroundColor: AppColor.col8,
 
@@ -61,4 +77,7 @@ class _FavoriteScreen extends State<FavoriteScreen> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

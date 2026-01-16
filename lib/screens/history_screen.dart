@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pos_lab/controllers/counter_controller.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
+import 'package:flutter/foundation.dart';
+
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -10,9 +14,22 @@ class HistoryScreen extends StatefulWidget {
   State<HistoryScreen> createState() => _HistoryScreen();
 }
 
-class _HistoryScreen extends State<HistoryScreen> {
+class _HistoryScreen extends State<HistoryScreen>
+    with AutomaticKeepAliveClientMixin {
+  final CounterController counterController = Get.put(CounterController());
+
+  @override
+  void initState() {
+    if (kDebugMode) {
+      print('object');
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       backgroundColor: AppColor.col8,
 
@@ -61,4 +78,7 @@ class _HistoryScreen extends State<HistoryScreen> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

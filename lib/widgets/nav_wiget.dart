@@ -1,88 +1,78 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pos_lab/controllers/main_controller.dart';
 import 'package:pos_lab/screens/cart_screen.dart';
+import 'package:pos_lab/screens/category_screen.dart';
 import 'package:pos_lab/screens/favorite_screen.dart';
 import 'package:pos_lab/screens/history_screen.dart';
 import 'package:pos_lab/screens/home_screen.dart';
 import 'package:pos_lab/style/color.dart';
 
 class NavWiget extends StatefulWidget {
-  const NavWiget({Key? key}) : super(key: key);
+  const NavWiget({super.key});
 
   @override
-  _NavBarPageState createState() => _NavBarPageState();
+  State<NavWiget> createState() => _NavWigetState();
 }
 
-class _NavBarPageState extends State<NavWiget> {
-  int _selectedIndex = 0;
-
-  void _navigateButtonBar(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  final List<Widget> _pages = [
-    HomeScreen(),
-    CartScreen(),
-    HistoryScreen(),
-    FavoriteScreen(),
-  ];
+class _NavWigetState extends State<NavWiget> {
+  final MainController controller = Get.put(MainController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _navigateButtonBar,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: AppColor.col5,
-        unselectedItemColor: Colors.grey,
-        selectedIconTheme: const IconThemeData(
-          size: 25,
+      body: Obx(
+        () => Navigator(
+          onGenerateRoute: (settings) => MaterialPageRoute(builder: (context) => IndexedStack(
+              index: controller.currentIndex.value,
+              children: [
+                HomeScreen(),
+                CartScreen(),
+                HistoryScreen(),
+                FavoriteScreen(),
+                CategoryScreen()
+              ],
+            ),),
         ),
-        unselectedIconTheme: const IconThemeData(
-          size: 20,
+      ),
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          currentIndex: controller.currentIndex.value > 3 ? 0 : controller.currentIndex.value,
+          onTap: controller.onChanged,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: AppColor.col5,
+          unselectedItemColor: Colors.grey,
+          selectedIconTheme: const IconThemeData(size: 25),
+          unselectedIconTheme: const IconThemeData(size: 20),
+          selectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.home),
+              activeIcon: Icon(CupertinoIcons.house_fill),
+
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.cart),
+              activeIcon: Icon(CupertinoIcons.cart_fill),
+              label: 'Ordered',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.clock),
+              activeIcon: Icon(CupertinoIcons.clock_fill),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.heart),
+              activeIcon: Icon(CupertinoIcons.heart_fill),
+              label: 'Favorite',
+            ),
+          ],
         ),
-        selectedLabelStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 14,
-        ),
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              _selectedIndex == 0
-                  ? CupertinoIcons.house_fill
-                  : CupertinoIcons.home,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              _selectedIndex == 1
-                  ? CupertinoIcons.cart_fill
-                  : CupertinoIcons.cart,
-            ),
-            label: 'Ordered',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              _selectedIndex == 2
-                  ? CupertinoIcons.clock_fill
-                  : CupertinoIcons.clock,
-            ),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              _selectedIndex == 3
-                  ? CupertinoIcons.heart_fill
-                  : CupertinoIcons.heart,
-            ),
-            label: 'Favorite',
-          ),
-        ],
       ),
     );
   }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pos_lab/controllers/main_controller.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/style/color.dart';
@@ -24,7 +26,7 @@ class _CategoryScreen extends State<CategoryScreen> {
     {"name": "Frappuccino", "icon": "assets/icons/frappuccino.svg"},
     {
       "name": "Food & Snacks",
-      "icon": "assets/icons/food&snack.svg",
+      "icon": "assets/icons/food_snack.svg",
     }, // Name matches ProductRepo
   ];
 
@@ -87,7 +89,9 @@ class _CategoryScreen extends State<CategoryScreen> {
                 child: Row(
                   children: [
                     GestureDetector(
-                      onTap: () => Navigator.pop(context), // Real back action
+                      onTap: () {
+                        Get.find<MainController>().currentIndex.value = 0;
+                      },
                       child: Icon(
                         Icons.arrow_back_ios,
                         size: 20,

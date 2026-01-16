@@ -14,7 +14,7 @@ class CartScreen extends StatefulWidget {
   State<CartScreen> createState() => _CartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartScreenState extends State<CartScreen> with AutomaticKeepAliveClientMixin{
   bool isLoading = true;
 
   List<CartItem> get items => ProductRepo.cartItems;
@@ -60,8 +60,10 @@ class _CartScreenState extends State<CartScreen> {
     // await api.deleteCartItem(item.id);
   }
 
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: AppColor.col8,
       body: Stack(
@@ -162,6 +164,9 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
+  
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _QtyButton extends StatelessWidget {
