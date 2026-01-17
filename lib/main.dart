@@ -4,14 +4,21 @@ import 'package:device_preview/device_preview.dart';
 import 'package:get/get.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/nav_wiget.dart';
+import 'dart:async';
 
 void main() {
-  runApp(
-    DevicePreview(
-      enabled: kDebugMode,
-      builder: (context) => const MyApp(),
-    ),
-  );
+    FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.dumpErrorToConsole(details);
+  };
+
+  runZonedGuarded(() {
+    runApp(const MyApp());
+  }, (error, stack) {
+    debugPrint("ZONED ERROR: $error");
+    debugPrintStack(stackTrace: stack);
+  });
+  
+  
 }
 
 class MyApp extends StatelessWidget {
