@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:pos_lab/models/cart_items.dart';
 import 'package:pos_lab/models/product.dart';
+import 'package:pos_lab/models/transaction.dart';
 
 class ProductRepo {
   static final ValueNotifier<int> cartVersion = ValueNotifier<int>(0);
@@ -218,26 +219,38 @@ class ProductRepo {
     ),
   ];
   static List<CartItem> cartItems = [];
+  static final ValueNotifier<int> transactionVersion = ValueNotifier<int>(0);
+  static void _notifyTransactionChanged() => transactionVersion.value++;
+  static double calcDeliveryCharge(List<CartItem> items) =>
+      items.isEmpty ? 0 : 3.15;
 
-  static void addProductToCart(Product product) {
-    if (cartItems.isEmpty) {
-      CartItem item = CartItem(id: 1, product: product);
-      item.qty = 1;
-      cartItems.add(item);
+  static final List<TransactionModel> transactions = [];
+
+  static void addProductToCart(
+    Product product, {
+    String size = "Normal",
+    String sweetness = "Standard",
+    double sugarPercent = 50.0,
+  }) {
+    final index = cartItems.indexWhere(
+      (item) => item.isSameLineAs(product, size, sweetness, sugarPercent),
+    );
+
+    if (index != -1) {
+      cartItems[index].qty += 1;
     } else {
-      final existingItemIndex = cartItems.indexWhere(
-        (item) => item.product.id == product.id,
+      cartItems.add(
+        CartItem(
+          id: cartItems.length + 1,
+          product: product,
+          qty: 1,
+          size: size,
+          sweetness: sweetness,
+          sugarPercent: sugarPercent,
+        ),
       );
-      if (existingItemIndex != -1) {
-        cartItems[existingItemIndex].qty += 1;
-      } else {
-        final newItem = CartItem(id: cartItems.length + 1, product: product);
-        newItem.qty = 1;
-        cartItems.add(newItem);
-      }
     }
-    getTotalItem();
-    getTotalOrderPrice();
+
     _notifyCartChanged();
   }
 
@@ -285,5 +298,42 @@ class ProductRepo {
       price += element.totalPrice;
     }
     return price;
+  }
+
+  static TransactionModel createTransactionFromCart({
+    TransactionStatus status = TransactionStatus.paid,
+  }) {
+    final itemsSnapshot = cartItems
+        .map((c) {
+          return TransactionItem(
+            productId: c.product.id,
+            name: c.product.name,
+            image: c.product.image,
+            unitPrice: c.product.price,
+            qty: c.qty,
+            size: c.size,
+            sweetness: c.sweetness,
+            sugarPercent: c.sugarPercent,
+          );
+        })
+        .toList(growable: false);
+
+    final subTotal = getTotalOrderPrice();
+    final deliveryCharge = ProductRepo.calcDeliveryCharge(cartItems);
+    final grandTotal = subTotal + deliveryCharge;
+
+    final trx = TransactionModel(
+      id: "TRX-${DateTime.now().millisecondsSinceEpoch}",
+      createdAt: DateTime.now(),
+      subTotal: subTotal,
+      deliveryCharge: double.parse(deliveryCharge.toStringAsFixed(2)),
+      grandTotal: grandTotal,
+      items: itemsSnapshot,
+      status: status,
+    );
+
+    transactions.insert(0, trx);
+    _notifyTransactionChanged();
+    return trx;
   }
 }

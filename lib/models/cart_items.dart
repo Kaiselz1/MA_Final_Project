@@ -5,14 +5,22 @@ class CartItem {
   final int id;
   final Product product;
 
-  int _qty = 0;
+  /// ✅ Customization snapshot from ProductDetailScreen
+  final String size;         // e.g. "Normal", "Large"
+  final String sweetness;    // e.g. "Standard", "Less", "None"
+  final double sugarPercent; // 0 - 100
 
+  int _qty = 0;
   final ValueNotifier<int> qtyNotifier = ValueNotifier<int>(0);
 
   CartItem({
     required this.id,
     required this.product,
     int qty = 1,
+
+    required this.size,
+    required this.sweetness,
+    required this.sugarPercent,
   }) {
     _qty = qty;
     qtyNotifier.value = qty;
@@ -22,10 +30,17 @@ class CartItem {
 
   set qty(int value) {
     _qty = value;
-    qtyNotifier.value = value; 
+    qtyNotifier.value = value;
   }
 
   double get totalPrice => product.price * qty;
 
   String get strTotalPrice => '\$${totalPrice.toStringAsFixed(2)}';
+
+  bool isSameLineAs(Product p, String size, String sweetness, double sugarPercent) {
+    return product.id == p.id &&
+        this.size == size &&
+        this.sweetness == sweetness &&
+        this.sugarPercent == sugarPercent;
+  }
 }
