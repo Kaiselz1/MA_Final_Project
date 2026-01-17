@@ -241,7 +241,7 @@ class ProductRepo {
     } else {
       cartItems.add(
         CartItem(
-          id: cartItems.length + 1,
+          id: DateTime.now().microsecondsSinceEpoch,
           product: product,
           qty: 1,
           size: size,

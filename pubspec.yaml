@@ -69,6 +69,8 @@ flutter:
     - assets/images/sliders/
     - assets/images/
     - assets/icons/
+    - assets/lottie/
+
  
   fonts:
     - family: Tripsans

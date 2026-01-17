@@ -285,7 +285,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           child: ElevatedButton(
             onPressed: () {
               for (int i = 0; i < quantity; i++) {
-                ProductRepo.addProductToCart(widget.product);
+                ProductRepo.addProductToCart(
+                  widget.product,
+                  size: currentSize,
+                  sweetness: currentSweetness,
+                  sugarPercent: sugarVal,
+                );
               }
               controller.proceedToCheckout(context);
             },

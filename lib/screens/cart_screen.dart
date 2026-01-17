@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pos_lab/controllers/cart_controller.dart';
+import 'package:pos_lab/dialogs/error_dialog.dart';
+import 'package:pos_lab/dialogs/loading_dialog.dart';
+import 'package:pos_lab/dialogs/success_dialog.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/style/color.dart';
+import 'package:pos_lab/ui_state/ui_status.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
 import 'package:pos_lab/widgets/cart_item_tile.dart';
+
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
@@ -14,12 +19,41 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen>
     with AutomaticKeepAliveClientMixin {
   late final CartController controller;
+  bool _listenerAttached = false;
 
   @override
   void initState() {
     super.initState();
     controller = CartController();
     controller.init();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_listenerAttached) return;
+    _listenerAttached = true;
+
+    controller.addListener(() {
+      switch (controller.status) {
+        case UIStatus.loading:
+          showLoading(context);
+          controller.resetStatus();
+          break;
+
+        case UIStatus.error:
+          Navigator.pop(context); // close loading
+          showError(context, controller.errorMessage ?? "Unknown error");
+          controller.resetStatus();
+
+          break;
+
+        case UIStatus.success:
+        case UIStatus.idle:
+          break;
+      }
+    });
   }
 
   @override
@@ -44,18 +78,11 @@ class _CartScreenState extends State<CartScreen>
               builder: (_, __, ___) {
                 final items = controller.items;
 
-                if (controller.isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
                 if (items.isEmpty) {
                   return const Center(
                     child: Text(
                       "Your cart is empty",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(color: Colors.grey, fontSize: 16),
                     ),
                   );
                 }
@@ -82,7 +109,6 @@ class _CartScreenState extends State<CartScreen>
             ),
           ),
 
-     
           ValueListenableBuilder<int>(
             valueListenable: ProductRepo.cartVersion,
             builder: (_, __, ___) {
@@ -122,8 +148,7 @@ class _CartScreenState extends State<CartScreen>
                         child: ElevatedButton(
                           onPressed: isEmpty
                               ? null
-                              : () =>
-                                  controller.proceedToCheckout(context),
+                              : () => controller.proceedToCheckout(context),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColor.col3,
                             shape: RoundedRectangleBorder(
