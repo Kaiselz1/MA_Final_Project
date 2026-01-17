@@ -60,7 +60,7 @@ class _NavWigetState extends State<NavWiget> {
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.cart),
               activeIcon: Icon(CupertinoIcons.cart_fill),
-              label: 'Ordered',
+              label: 'Cart',
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.clock),

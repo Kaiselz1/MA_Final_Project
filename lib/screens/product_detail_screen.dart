@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pos_lab/controllers/cart_controller.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
-import 'package:pos_lab/screens/cart_screen.dart';
+import 'package:pos_lab/screens/checkout_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/size_selector_widget.dart';
 import 'package:pos_lab/widgets/sugar_selector_widget.dart';
@@ -16,6 +17,14 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  late final CartController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = CartController();
+  }
+
   bool isExpanded = false;
   int quantity = 1;
   bool isFavorite = false;
@@ -273,10 +282,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               for (int i = 0; i < quantity; i++) {
                 ProductRepo.addProductToCart(widget.product);
               }
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const CartScreen()),
-              );
+              controller.proceedToCheckout(context);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColor.col5,

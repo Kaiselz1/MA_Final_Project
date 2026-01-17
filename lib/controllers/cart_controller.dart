@@ -19,7 +19,6 @@ class CartController extends ChangeNotifier {
 
   /// Called by View
   void init() {
-
     _isLoading = false;
     notifyListeners();
   }
@@ -60,9 +59,24 @@ class CartController extends ChangeNotifier {
   }
 
   void proceedToCheckout(BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const CheckoutScreen()),
+      MaterialPageRoute(
+        builder: (_) => CheckoutScreen(
+          isLoading: false,
+          items: ProductRepo.cartItems,
+          subTotal: ProductRepo.getTotalOrderPrice(),
+          deliveryCharge: ProductRepo.cartItems.isEmpty ? 0 : 2,
+          grandTotal:
+              ProductRepo.getTotalOrderPrice() +
+              (ProductRepo.cartItems.isEmpty ? 0 : 2),
+          onBackTap: () => Navigator.pop(context),
+          onIncrease: (item) => ProductRepo.addProductToCart(item.product),
+          onDecrease: (item) => ProductRepo.removeFromCart(item),
+          onDelete: (item) => ProductRepo.deleteProductFromCart(item.id),
+          onConfirmPayment: () {},
+        ),
+      ),
     );
   }
 }
