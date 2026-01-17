@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pos_lab/models/product.dart';
+import 'package:pos_lab/repositories/product_repo.dart';
+import 'package:pos_lab/screens/cart_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/size_selector_widget.dart';
 import 'package:pos_lab/widgets/sugar_selector_widget.dart';
@@ -203,8 +205,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         SizedBox(width: 20),
         _qtyBtn(Icons.remove, Colors.red, () {
           if (quantity > 1) setState(() => quantity--);
-        }
-        ),
+        }),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Text(
@@ -239,7 +240,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       children: [
         Expanded(
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              for (int i = 0; i < quantity; i++) {
+                ProductRepo.addProductToCart(widget.product);
+              }
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text("Added to cart")));
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColor.col4,
               foregroundColor: Colors.white,
@@ -261,7 +269,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
         Expanded(
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              for (int i = 0; i < quantity; i++) {
+                ProductRepo.addProductToCart(widget.product);
+              }
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const CartScreen()),
+              );
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColor.col5,
               foregroundColor: Colors.white,

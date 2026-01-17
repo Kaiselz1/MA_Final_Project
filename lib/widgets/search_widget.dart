@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pos_lab/controllers/main_controller.dart';
 import 'package:pos_lab/style/color.dart';
-import 'package:pos_lab/screens/category_screen.dart';
 
 class SearchBarWidget extends StatelessWidget {
   final Function(String)? onSearchChanged;

@@ -23,19 +23,20 @@ class _NavWigetState extends State<NavWiget> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-        () => Navigator(
-          onGenerateRoute: (settings) => MaterialPageRoute(builder: (context) => IndexedStack(
-              index: controller.currentIndex.value,
-              children: [
-                HomeScreen(),
-                CartScreen(),
-                HistoryScreen(),
-                FavoriteScreen(),
-                CategoryScreen()
-              ],
-            ),),
-        ),
-      ),
+        () => IndexedStack(
+            index: controller.currentIndex.value,
+            children: const [
+              HomeScreen(),
+              CartScreen(),
+              HistoryScreen(),
+              FavoriteScreen(),
+              CategoryScreen(),
+            ],
+          )),
+
+
+
+          
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           currentIndex: controller.currentIndex.value > 3 ? 0 : controller.currentIndex.value,

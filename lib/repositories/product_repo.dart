@@ -1,7 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:pos_lab/models/cart_items.dart';
 import 'package:pos_lab/models/product.dart';
 
 class ProductRepo {
+  static final ValueNotifier<int> cartVersion = ValueNotifier<int>(0);
+
+  static void _notifyCartChanged() => cartVersion.value++;
+
   static List<Product> products = [
     Product(
       id: 1,
@@ -233,6 +238,7 @@ class ProductRepo {
     }
     getTotalItem();
     getTotalOrderPrice();
+    _notifyCartChanged();
   }
 
   static void removeFromCart(CartItem item) {
@@ -250,16 +256,19 @@ class ProductRepo {
 
     getTotalItem();
     getTotalOrderPrice();
+    _notifyCartChanged();
   }
 
   static void clearCart() {
     cartItems.clear();
     getTotalOrderPrice();
     getTotalItem();
+    _notifyCartChanged();
   }
 
   static void deleteProductFromCart(int id) {
     cartItems.removeWhere((element) => element.id == id);
+    _notifyCartChanged();
   }
 
   static int getTotalItem() {
