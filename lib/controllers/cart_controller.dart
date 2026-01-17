@@ -13,7 +13,7 @@ class CartController extends ChangeNotifier {
 
   double get subTotal => items.fold(0, (sum, item) => sum + item.totalPrice);
 
-  double get deliveryCharge => items.isEmpty ? 0 : 2;
+  double get deliveryCharge =>  ProductRepo.calcDeliveryCharge(items);
 
   double get grandTotal => subTotal + deliveryCharge;
 

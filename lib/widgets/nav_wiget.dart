@@ -5,8 +5,8 @@ import 'package:pos_lab/controllers/main_controller.dart';
 import 'package:pos_lab/screens/cart_screen.dart';
 import 'package:pos_lab/screens/category_screen.dart';
 import 'package:pos_lab/screens/favorite_screen.dart';
-import 'package:pos_lab/screens/history_screen.dart';
 import 'package:pos_lab/screens/home_screen.dart';
+import 'package:pos_lab/screens/transaction_history_screen.dart';
 import 'package:pos_lab/style/color.dart';
 
 class NavWiget extends StatefulWidget {
@@ -28,7 +28,7 @@ class _NavWigetState extends State<NavWiget> {
             children: const [
               HomeScreen(),
               CartScreen(),
-              HistoryScreen(),
+              TransactionHistoryScreen(),
               FavoriteScreen(),
               CategoryScreen(),
             ],
