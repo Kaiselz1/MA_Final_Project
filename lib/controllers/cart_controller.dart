@@ -3,28 +3,54 @@ import 'package:pos_lab/models/cart_items.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/screens/checkout_screen.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
+import 'package:pos_lab/ui_state/ui_status.dart';
 
 class CartController extends ChangeNotifier {
-  bool _isLoading = true;
+  UIStatus status = UIStatus.idle;
+  String? errorMessage;
 
-  bool get isLoading => _isLoading;
+  void _setLoading() {
+    status = UIStatus.loading;
+    notifyListeners();
+  }
+
+  void _setSuccess() {
+    status = UIStatus.success;
+    notifyListeners();
+  }
+
+  void _setError(String msg) {
+    status = UIStatus.error;
+    errorMessage = msg;
+    notifyListeners();
+  }
+
+  void resetStatus() {
+    status = UIStatus.idle;
+    errorMessage = null;
+    notifyListeners();
+  }
 
   List<CartItem> get items => ProductRepo.cartItems;
 
   double get subTotal => items.fold(0, (sum, item) => sum + item.totalPrice);
 
-  double get deliveryCharge =>  ProductRepo.calcDeliveryCharge(items);
+  double get deliveryCharge => ProductRepo.calcDeliveryCharge(items);
 
   double get grandTotal => subTotal + deliveryCharge;
 
   /// Called by View
   void init() {
-    _isLoading = false;
     notifyListeners();
   }
 
   Future<void> increaseQty(CartItem item) async {
-    ProductRepo.addProductToCart(item.product);
+    ProductRepo.addProductToCart(
+      item.product,
+      size: item.size,
+      sweetness: item.sweetness,
+      sugarPercent: item.sugarPercent,
+    );
   }
 
   Future<void> decreaseQty(CartItem item) async {
@@ -35,7 +61,7 @@ class CartController extends ChangeNotifier {
     ProductRepo.deleteProductFromCart(item.id);
   }
 
-  // Navigation (kept OUT of UI logic)
+  // Navigation
   void openSettings(BuildContext context) {
     Navigator.push(
       context,
@@ -63,20 +89,26 @@ class CartController extends ChangeNotifier {
       context,
       MaterialPageRoute(
         builder: (_) => CheckoutScreen(
-          isLoading: false,
-          items: ProductRepo.cartItems,
-          subTotal: ProductRepo.getTotalOrderPrice(),
-          deliveryCharge: ProductRepo.cartItems.isEmpty ? 0 : 2,
-          grandTotal:
-              ProductRepo.getTotalOrderPrice() +
-              (ProductRepo.cartItems.isEmpty ? 0 : 2),
           onBackTap: () => Navigator.pop(context),
-          onIncrease: (item) => ProductRepo.addProductToCart(item.product),
+
+          onIncrease: (item) => ProductRepo.addProductToCart(
+            item.product,
+            size: item.size,
+            sweetness: item.sweetness,
+            sugarPercent: item.sugarPercent,
+          ),
+
           onDecrease: (item) => ProductRepo.removeFromCart(item),
           onDelete: (item) => ProductRepo.deleteProductFromCart(item.id),
+
           onConfirmPayment: () {},
         ),
       ),
     );
   }
+
+
+
+
+  
 }

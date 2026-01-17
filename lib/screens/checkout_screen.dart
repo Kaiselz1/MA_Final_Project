@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:pos_lab/controllers/main_controller.dart';
 import 'package:pos_lab/models/cart_items.dart';
 import 'package:pos_lab/models/transaction.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
 import 'package:pos_lab/widgets/cart_item_tile.dart';
+import 'package:get/get.dart';
 
 class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({
     super.key,
-    required this.isLoading,
-    required this.items,
-    required this.subTotal,
-    required this.deliveryCharge,
-    required this.grandTotal,
     required this.onBackTap,
     required this.onIncrease,
     required this.onDecrease,
@@ -21,15 +18,8 @@ class CheckoutScreen extends StatelessWidget {
     required this.onConfirmPayment,
   });
 
-  /// UI State (from controller / repo layer)
-  final bool isLoading;
-  final List<CartItem> items;
 
-  final double subTotal;
-  final double deliveryCharge;
-  final double grandTotal;
 
-  /// UI Actions (controller callbacks)
   final VoidCallback onBackTap;
   final VoidCallback onConfirmPayment;
   final void Function(CartItem item) onIncrease;
@@ -46,16 +36,12 @@ class CheckoutScreen extends StatelessWidget {
           AppTitleHeader(title: 'Checkout', onBackTap: onBackTap),
           const SizedBox(height: 40),
 
-          /// ✅ Reuse the same rebuild trigger as CartScreen
           Expanded(
             child: ValueListenableBuilder<int>(
               valueListenable: ProductRepo.cartVersion,
               builder: (_, __, ___) {
-                if (isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
 
-                final liveItems = ProductRepo.cartItems; // ✅ always latest
+                final liveItems = ProductRepo.cartItems; 
 
                 if (liveItems.isEmpty) {
                   return const Center(
@@ -137,7 +123,10 @@ class CheckoutScreen extends StatelessWidget {
                                 status: TransactionStatus.paid,
                               );
                               ProductRepo.clearCart();
-                              Navigator.pop(context);
+                              final main = Get.find<MainController>();
+                              main.currentIndex.value = 2;
+
+                              Navigator.of(context).popUntil((r) => r.isFirst);
                             },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColor.col4,

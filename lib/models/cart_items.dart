@@ -5,10 +5,10 @@ class CartItem {
   final int id;
   final Product product;
 
-  /// ✅ Customization snapshot from ProductDetailScreen
-  final String size;         // e.g. "Normal", "Large"
-  final String sweetness;    // e.g. "Standard", "Less", "None"
-  final double sugarPercent; // 0 - 100
+
+  final String size;         
+  final String sweetness;    
+  final double sugarPercent; 
 
   int _qty = 0;
   final ValueNotifier<int> qtyNotifier = ValueNotifier<int>(0);
