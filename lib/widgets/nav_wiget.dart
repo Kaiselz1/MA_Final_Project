@@ -24,22 +24,22 @@ class _NavWigetState extends State<NavWiget> {
     return Scaffold(
       body: Obx(
         () => IndexedStack(
-            index: controller.currentIndex.value,
-            children: const [
-              HomeScreen(),
-              CartScreen(),
-              TransactionHistoryScreen(),
-              FavoriteScreen(),
-              CategoryScreen(),
-            ],
-          )),
+          index: controller.currentIndex.value,
+          children: const [
+            HomeScreen(),
+            CartScreen(),
+            TransactionHistoryScreen(),
+            FavoriteScreen(),
+            CategoryScreen(),
+          ],
+        ),
+      ),
 
-
-
-          
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
-          currentIndex: controller.currentIndex.value > 3 ? 0 : controller.currentIndex.value,
+          currentIndex: controller.currentIndex.value > 3
+              ? 0
+              : controller.currentIndex.value,
           onTap: controller.onChanged,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: AppColor.col5,

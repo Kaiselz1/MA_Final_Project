@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pos_lab/controllers/cart_controller.dart';
 import 'package:pos_lab/models/product.dart';
-import 'package:pos_lab/repositories/product_repo.dart';
-import 'package:pos_lab/screens/checkout_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/size_selector_widget.dart';
 import 'package:pos_lab/widgets/sugar_selector_widget.dart';
@@ -17,17 +14,10 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  late final CartController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = CartController();
-  }
-
   bool isExpanded = false;
   int quantity = 1;
   bool isFavorite = false;
+  bool isLoading = false;
 
   // Sugar & Size State
   SugarMode activeSugar = SugarMode.percentage;
@@ -37,140 +27,169 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   String currentSize = "Normal";
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                Image.asset(
-                  widget.product.image,
-                  width: double.infinity,
-                  height: 320,
-                  fit: BoxFit.cover,
-                ),
-                Positioned(
-                  top: 40,
-                  left: 20,
-                  child: _buildCircleBtn(
-                    Icons.arrow_back_ios_new,
-                    () => Navigator.pop(context),
-                  ),
-                ),
-                Positioned(top: 40, right: 20, child: _buildAnimatedHeart()),
-              ],
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(20),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Stack(
                     children: [
-                      Expanded(
-                        child: Text(
-                          widget.product.name,
-                          style: const TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            height: 1.1,
-                          ),
+                      Image.network(
+                        widget.product.imageUrl,
+                        width: double.infinity,
+                        height: 320,
+                        fit: BoxFit.cover,
+                      ),
+                      Positioned(
+                        top: 40,
+                        left: 20,
+                        child: _buildCircleBtn(
+                          Icons.arrow_back_ios_new,
+                          () => Navigator.pop(context),
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Text(
-                        "\$${widget.product.price.toStringAsFixed(2)}",
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold,
-                          color: AppColor.col5,
-                          height: 1.1,
-                        ),
+                      Positioned(
+                        top: 40,
+                        right: 20,
+                        child: _buildAnimatedHeart(),
                       ),
                     ],
                   ),
-                  Text(
-                    widget.product.category,
-                    style: const TextStyle(color: Colors.grey, fontSize: 16),
-                  ),
 
-                  const Divider(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                widget.product.name,
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.1,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              "\$${widget.product.price.toStringAsFixed(2)}",
+                              style: TextStyle(
+                                fontSize: 35,
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.col5,
+                                height: 1.1,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          widget.product.categoryName,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                          ),
+                        ),
 
-                  _buildQuantitySection(),
+                        const Divider(height: 30),
 
-                  const SizedBox(height: 25),
+                        _buildQuantitySection(),
 
-                  const Text(
-                    "Description",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    widget.product.description,
-                    maxLines: isExpanded ? null : 2,
-                    overflow: isExpanded
-                        ? TextOverflow.visible
-                        : TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.grey, height: 1.5),
-                  ),
-                  GestureDetector(
-                    onTap: () => setState(() => isExpanded = !isExpanded),
-                    child: Text(
-                      isExpanded ? "See Less" : "See More",
-                      style: const TextStyle(
-                        color: Colors.brown,
-                        fontWeight: FontWeight.bold,
-                      ),
+                        const SizedBox(height: 25),
+
+                        const Text(
+                          "Description",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          widget.product.description,
+                          maxLines: isExpanded ? null : 2,
+                          overflow: isExpanded
+                              ? TextOverflow.visible
+                              : TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            height: 1.5,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => setState(() => isExpanded = !isExpanded),
+                          child: Text(
+                            isExpanded ? "See Less" : "See More",
+                            style: const TextStyle(
+                              color: Colors.brown,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 25),
+                        const Text(
+                          "Sugar",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        SugarSelector(
+                          activeMode: activeSugar,
+                          percentage: sugarVal,
+                          selectedSweetness: currentSweetness,
+                          showSlider: showSlider,
+                          onChanged:
+                              (mode, {percent, sweetness, toggleSlider}) {
+                                setState(() {
+                                  activeSugar = mode;
+                                  if (percent != null) sugarVal = percent;
+                                  if (sweetness != null)
+                                    currentSweetness = sweetness;
+                                  showSlider = toggleSlider ?? false;
+                                  if (mode == SugarMode.none) sugarVal = 0;
+                                });
+                              },
+                        ),
+
+                        SizedBox(height: 15),
+
+                        Text(
+                          "Size",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizeSelector(
+                          selectedSize: currentSize,
+                          onSelect: (size) =>
+                              setState(() => currentSize = size),
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        _buildBottomButtons(),
+                      ],
                     ),
                   ),
-
-                  const SizedBox(height: 25),
-                  const Text(
-                    "Sugar",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-
-                  SugarSelector(
-                    activeMode: activeSugar,
-                    percentage: sugarVal,
-                    selectedSweetness: currentSweetness,
-                    showSlider: showSlider,
-                    onChanged: (mode, {percent, sweetness, toggleSlider}) {
-                      setState(() {
-                        activeSugar = mode;
-                        if (percent != null) sugarVal = percent;
-                        if (sweetness != null) currentSweetness = sweetness;
-                        showSlider = toggleSlider ?? false;
-                        if (mode == SugarMode.none) sugarVal = 0;
-                      });
-                    },
-                  ),
-
-                  SizedBox(height: 15),
-
-                  Text(
-                    "Size",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  SizeSelector(
-                    selectedSize: currentSize,
-                    onSelect: (size) => setState(() => currentSize = size),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  _buildBottomButtons(),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -249,19 +268,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       children: [
         Expanded(
           child: ElevatedButton(
-            onPressed: () {
-              for (int i = 0; i < quantity; i++) {
-                ProductRepo.addProductToCart(
-                  widget.product,
-                  size: currentSize,
-                  sweetness: currentSweetness,
-                  sugarPercent: sugarVal,
-                );
-              }
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text("Added to cart")));
-            },
+            onPressed: () {},
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColor.col4,
               foregroundColor: Colors.white,
@@ -283,17 +290,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
         Expanded(
           child: ElevatedButton(
-            onPressed: () {
-              for (int i = 0; i < quantity; i++) {
-                ProductRepo.addProductToCart(
-                  widget.product,
-                  size: currentSize,
-                  sweetness: currentSweetness,
-                  sugarPercent: sugarVal,
-                );
-              }
-              controller.proceedToCheckout(context);
-            },
+            onPressed: () {},
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColor.col5,
               foregroundColor: Colors.white,

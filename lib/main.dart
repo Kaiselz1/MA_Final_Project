@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:pos_lab/style/color.dart';
+import 'package:pos_lab/widgets/nav_wiget.dart';
 import 'package:get/get.dart';
 import 'package:pos_lab/screens/splash_screen.dart';
 import 'package:pos_lab/screens/login_screen.dart';

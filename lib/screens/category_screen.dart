@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_lab/controllers/main_controller.dart';
+import 'package:pos_lab/models/category.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/models/user_profile.dart';
 import 'package:pos_lab/repositories/user_repo.dart';
+import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/category_card.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
+import 'package:pos_lab/api/api_base_url.dart';
+import 'package:pos_lab/api/api_end_point.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -19,18 +25,20 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreen extends State<CategoryScreen> {
   Set<int> favoriteIds = {};
   String _selectedCategoryPath = "category";
+  bool isLoading = true;
+  List<Category> categories = [];
 
-  final List<Map<String, String>> categoryData = [
-    {"name": "Iced Coffee", "icon": "assets/icons/iced_coffee.svg"},
-    {"name": "Hot Coffee", "icon": "assets/icons/hot_coffee.svg"},
-    {"name": "Hot Drink", "icon": "assets/icons/hot_drink.svg"},
-    {"name": "Iced Drink", "icon": "assets/icons/iced_drink.svg"},
-    {"name": "Frappuccino", "icon": "assets/icons/frappuccino.svg"},
-    {
-      "name": "Food & Snacks",
-      "icon": "assets/icons/food_snack.svg",
-    }, // Name matches ProductRepo
-  ];
+  // List<Category> categories = [
+  //   {"name": "Iced Coffee", "icon": "assets/icons/iced_coffee.svg"},
+  //   {"name": "Hot Coffee", "icon": "assets/icons/hot_coffee.svg"},
+  //   {"name": "Hot Drink", "icon": "assets/icons/hot_drink.svg"},
+  //   {"name": "Iced Drink", "icon": "assets/icons/iced_drink.svg"},
+  //   {"name": "Frappuccino", "icon": "assets/icons/frappuccino.svg"},
+  //   {
+  //     "name": "Food & Snacks",
+  //     "icon": "assets/icons/food_snack.svg",
+  //   }, // Name matches ProductRepo
+  // ];
 
   void addToFavorite(Product product) async {
     setState(() {
@@ -40,6 +48,33 @@ class _CategoryScreen extends State<CategoryScreen> {
         favoriteIds.add(product.id);
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCategories();
+  }
+
+  Future<void> fetchCategories() async {
+    try {
+      final response = await http.get(
+        Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.categories),
+        headers: {"accept": "application/json"},
+      );
+
+      if (response.statusCode == 200) {
+        final List data = jsonDecode(response.body);
+        setState(() {
+          categories = data.map((e) => Category.fromJson(e)).toList();
+          debugPrint("Grid received ${categories.length} categories");
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      debugPrint("API error: $e");
+      setState(() => isLoading = false);
+    }
   }
 
   @override
@@ -137,7 +172,7 @@ class _CategoryScreen extends State<CategoryScreen> {
               Expanded(
                 child: GridView.builder(
                   padding: const EdgeInsets.all(20),
-                  itemCount: categoryData.length,
+                  itemCount: categories.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 15,
@@ -145,11 +180,15 @@ class _CategoryScreen extends State<CategoryScreen> {
                     childAspectRatio: 1.0,
                   ),
                   itemBuilder: (context, index) {
+                    final category = categories[index];
                     return CategoryCard(
-                      title: categoryData[index]['name']!,
-                      iconPath: categoryData[index]['icon']!,
+                      title: category.name,
+                      iconPath: category.imageUrl,
                       onTap: () {
-                        // Navigate to a filtered product list based on categoryData[index]['name']
+                        // Update selected category
+                        ProductRepo.selectedCategory.value = category.name;
+                        // Go back to home screen
+                        Navigator.pop(context);
                       },
                     );
                   },

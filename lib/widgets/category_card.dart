@@ -33,14 +33,11 @@ class CategoryCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(
+            SvgPicture.network(
               iconPath,
               height: 70,
               width: 70,
-              colorFilter: ColorFilter.mode(
-                AppColor.col5, 
-                BlendMode.srcIn,
-              ),
+              colorFilter: ColorFilter.mode(AppColor.col5, BlendMode.srcIn),
             ),
             const SizedBox(height: 12),
             Text(

@@ -5,10 +5,9 @@ class CartItem {
   final int id;
   final Product product;
 
-
-  final String size;         
-  final String sweetness;    
-  final double sugarPercent; 
+  final String size;
+  final String sweetness;
+  final double sugarPercent;
 
   int _qty = 0;
   final ValueNotifier<int> qtyNotifier = ValueNotifier<int>(0);
@@ -37,7 +36,12 @@ class CartItem {
 
   String get strTotalPrice => '\$${totalPrice.toStringAsFixed(2)}';
 
-  bool isSameLineAs(Product p, String size, String sweetness, double sugarPercent) {
+  bool isSameLineAs(
+    Product p,
+    String size,
+    String sweetness,
+    double sugarPercent,
+  ) {
     return product.id == p.id &&
         this.size == size &&
         this.sweetness == sweetness &&

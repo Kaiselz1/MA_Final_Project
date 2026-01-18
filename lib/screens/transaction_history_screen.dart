@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pos_lab/controllers/cart_controller.dart';
 import 'package:pos_lab/models/user_profile.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/repositories/user_repo.dart';
@@ -25,32 +24,31 @@ class TransactionHistoryScreen extends StatelessWidget {
               builder: (_, user, __) => Text(user.email),
             ),
             onMenuTap: () => Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: const Duration(milliseconds: 200),
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const SettingScreen(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                            const begin = Offset(-1.0, 0.0);
-                            const end = Offset.zero;
-                            const curve = Curves
-                                .easeOutCubic; 
+              context,
+              PageRouteBuilder(
+                transitionDuration: const Duration(milliseconds: 200),
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const SettingScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(-1.0, 0.0);
+                      const end = Offset.zero;
+                      const curve = Curves.easeOutCubic;
 
-                            var tween = Tween(
-                              begin: begin,
-                              end: end,
-                            ).chain(CurveTween(curve: curve));
-                            var offsetAnimation = animation.drive(tween);
+                      var tween = Tween(
+                        begin: begin,
+                        end: end,
+                      ).chain(CurveTween(curve: curve));
+                      var offsetAnimation = animation.drive(tween);
 
-                            return SlideTransition(
-                              position: offsetAnimation,
-                              child: child,
-                            );
-                          },
-                    ),
-                  ),
-                
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      );
+                    },
+              ),
+            ),
+
             showSearchBar: false,
           ),
           const SizedBox(height: 20),
