@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pos_lab/controllers/cart_controller.dart';
 import 'package:pos_lab/models/user_profile.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/repositories/user_repo.dart';

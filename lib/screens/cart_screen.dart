@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pos_lab/controllers/cart_controller.dart';
 import 'package:pos_lab/dialogs/error_dialog.dart';
 import 'package:pos_lab/dialogs/loading_dialog.dart';
-import 'package:pos_lab/dialogs/success_dialog.dart';
 import 'package:pos_lab/models/user_profile.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/repositories/user_repo.dart';
@@ -117,6 +116,17 @@ class _CartScreenState extends State<CartScreen>
             onMenuTap: () => controller.openSettings(context),
             showSearchBar: false,
           ),
+          // ValueListenableBuilder<UserProfile>(
+          //   valueListenable: UserRepo.profileNotifier,
+          //   builder: (_, user, __) {
+          //     return AppHeader(
+          //       name: user.name,
+          //       email: user.email,
+          //       onMenuTap: () => controller.openSettings(context),
+          //       showSearchBar: false,
+          //     );
+          //   },
+          // ),
           const SizedBox(height: 20),
 
           Expanded(
