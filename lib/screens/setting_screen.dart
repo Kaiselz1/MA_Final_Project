@@ -4,6 +4,7 @@ import 'package:pos_lab/repositories/user_repo.dart';
 import 'package:pos_lab/screens/edit_profile_screen.dart';
 import 'package:pos_lab/screens/login_screen.dart';
 import 'package:pos_lab/style/color.dart';
+import 'package:pos_lab/services/auth_service.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -97,7 +98,6 @@ class _SettingScreenState extends State<SettingScreen> {
                       MaterialPageRoute(
                         builder: (context) => const EditProfileScreen(),
                       ),
-                   
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -184,6 +184,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
+                      // Call the logout method from AuthService
+                      AuthService.logout();
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(

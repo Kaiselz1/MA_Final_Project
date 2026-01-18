@@ -178,7 +178,7 @@ class AuthService {
     } catch (e) {
       print('Logout error: $e');
     } finally {
-      // Always delete token locally
+      // Call to delete the token from storage
       await deleteToken();
     }
   }

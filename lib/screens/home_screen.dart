@@ -82,7 +82,6 @@ class _HomeScreenState extends State<HomeScreen>
                             const end = Offset.zero;
                             const curve = Curves
                                 .easeOutCubic; // Smooth decelerating curve
-
                             var tween = Tween(
                               begin: begin,
                               end: end,

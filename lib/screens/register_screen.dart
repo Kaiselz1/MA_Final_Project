@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pos_lab/screens/home_screen.dart';
 import 'package:pos_lab/screens/login_screen.dart';
 import 'package:pos_lab/services/auth_service.dart';
 import 'package:pos_lab/style/color.dart';
@@ -39,13 +40,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    if (_passwordController.text != _confirmPasswordController.text) {
-      _showSnackBar('Passwords do not match', isError: true);
+    // 1. Length check (8 characters)
+    if (_passwordController.text.length < 8) {
+      _showSnackBar('Password must be at least 8 characters', isError: true);
       return;
     }
 
-    if (_passwordController.text.length < 6) {
-      _showSnackBar('Password must be at least 6 characters', isError: true);
+    // 2. Uppercase letter check
+    if (!_passwordController.text.contains(RegExp(r'[A-Z]'))) {
+      _showSnackBar(
+        'Password must contain at least one capital letter',
+        isError: true,
+      );
+      return;
+    }
+
+    // 3. Special character check (! or @ or others)
+    if (!_passwordController.text.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+      _showSnackBar(
+        'Password must contain at least one special character (e.g. ! or @)',
+        isError: true,
+      );
+      return;
+    }
+
+    if (_passwordController.text != _confirmPasswordController.text) {
+      _showSnackBar('Passwords do not match', isError: true);
       return;
     }
 
@@ -68,7 +88,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
     } else {
       _showSnackBar(result['message'] ?? 'Registration failed', isError: true);
