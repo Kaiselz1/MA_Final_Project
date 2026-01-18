@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_lab/controllers/category_controller.dart';
 import 'package:pos_lab/controllers/main_controller.dart';
 import 'package:pos_lab/models/category.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/category_card.dart';
+import 'package:pos_lab/widgets/header_widget.dart';
 import 'package:pos_lab/api/api_base_url.dart';
 import 'package:pos_lab/api/api_end_point.dart';
 import 'package:http/http.dart' as http;
@@ -24,6 +26,18 @@ class _CategoryScreen extends State<CategoryScreen> {
   bool isLoading = true;
   List<Category> categories = [];
 
+  // List<Category> categories = [
+  //   {"name": "Iced Coffee", "icon": "assets/icons/iced_coffee.svg"},
+  //   {"name": "Hot Coffee", "icon": "assets/icons/hot_coffee.svg"},
+  //   {"name": "Hot Drink", "icon": "assets/icons/hot_drink.svg"},
+  //   {"name": "Iced Drink", "icon": "assets/icons/iced_drink.svg"},
+  //   {"name": "Frappuccino", "icon": "assets/icons/frappuccino.svg"},
+  //   {
+  //     "name": "Food & Snacks",
+  //     "icon": "assets/icons/food_snack.svg",
+  //   }, // Name matches ProductRepo
+  // ];
+
   void addToFavorite(Product product) async {
     setState(() {
       if (favoriteIds.contains(product.id)) {
@@ -37,29 +51,29 @@ class _CategoryScreen extends State<CategoryScreen> {
   @override
   void initState() {
     super.initState();
-    fetchCategories();
+    // fetchCategories();
   }
 
-  Future<void> fetchCategories() async {
-    try {
-      final response = await http.get(
-        Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.categories),
-        headers: {"accept": "application/json"},
-      );
+  // Future<void> fetchCategories() async {
+  //   try {
+  //     final response = await http.get(
+  //       Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.categories),
+  //       headers: {"accept": "application/json"},
+  //     );
 
-      if (response.statusCode == 200) {
-        final List data = jsonDecode(response.body);
-        setState(() {
-          categories = data.map((e) => Category.fromJson(e)).toList();
-          debugPrint("Grid received ${categories.length} categories");
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      debugPrint("API error: $e");
-      setState(() => isLoading = false);
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       final List data = jsonDecode(response.body);
+  //       setState(() {
+  //         categories = data.map((e) => Category.fromJson(e)).toList();
+  //         debugPrint("Grid received ${categories.length} categories");
+  //         isLoading = false;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     debugPrint("API error: $e");
+  //     setState(() => isLoading = false);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +129,7 @@ class _CategoryScreen extends State<CategoryScreen> {
               Expanded(
                 child: GridView.builder(
                   padding: const EdgeInsets.all(20),
-                  itemCount: categories.length,
+                  itemCount: categoryController.categories.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 15,
@@ -123,7 +137,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                     childAspectRatio: 1.0,
                   ),
                   itemBuilder: (context, index) {
-                    final category = categories[index];
+                    final category = categoryController.categories[index];
                     return CategoryCard(
                       title: category.name,
                       iconPath: category.imageUrl,

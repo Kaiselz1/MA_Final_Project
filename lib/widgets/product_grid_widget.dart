@@ -18,7 +18,7 @@ class ProductGrid extends StatelessWidget {
       childAspectRatio: 0.75,
       // primary: true,
       shrinkWrap: true,
-      // physics: const NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       children: products.map((product) {
         return ProductCard(product: product, onAdd: () => onAdd(product));
       }).toList(),

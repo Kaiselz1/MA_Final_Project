@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:pos_lab/controllers/category_controller.dart';
+import 'package:pos_lab/controllers/product_controller.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/nav_wiget.dart';
 import 'package:get/get.dart';
@@ -12,9 +14,14 @@ import 'package:pos_lab/widgets/nav_wiget.dart';
 import 'dart:async';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
   };
+
+  Get.put(ProductController(), permanent: true);
+  Get.put(CategoryController(), permanent: true);
 
   runZonedGuarded(
     () {
