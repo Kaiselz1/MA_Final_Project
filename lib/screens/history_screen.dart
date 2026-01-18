@@ -8,7 +8,6 @@ import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
 import 'package:flutter/foundation.dart';
 
-
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
 
@@ -41,14 +40,14 @@ class _HistoryScreen extends State<HistoryScreen>
             children: [
               // ================= HEADER =================
               AppHeader(
-              name: ValueListenableBuilder<UserProfile>(
-              valueListenable: UserRepo.profileNotifier,
-              builder: (_, user, __) => Text(user.name),
-            ),
-            email: ValueListenableBuilder<UserProfile>(
-              valueListenable: UserRepo.profileNotifier,
-              builder: (_, user, __) => Text(user.email),
-            ),
+                name: ValueListenableBuilder<UserProfile>(
+                  valueListenable: UserRepo.profileNotifier,
+                  builder: (_, user, __) => Text(user.name),
+                ),
+                email: ValueListenableBuilder<UserProfile>(
+                  valueListenable: UserRepo.profileNotifier,
+                  builder: (_, user, __) => Text(user.email),
+                ),
                 onMenuTap: () {
                   Navigator.push(
                     context,

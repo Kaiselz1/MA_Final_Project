@@ -1,29 +1,49 @@
+import 'package:flutter/foundation.dart';
 import 'package:pos_lab/models/cart_items.dart';
 import 'package:pos_lab/models/product.dart';
+import 'package:pos_lab/models/transaction.dart';
 
 class ProductRepo {
+  static final ValueNotifier<int> cartVersion = ValueNotifier<int>(0);
+
+  static void _notifyCartChanged() => cartVersion.value++;
+
   static List<Product> products = [];
   static List<CartItem> cartItems = [];
 
-  static void addProductToCart(Product product) {
-    if (cartItems.isEmpty) {
-      CartItem item = CartItem(id: 1, product: product);
-      item.qty = 1;
-      cartItems.add(item);
+  static final ValueNotifier<int> transactionVersion = ValueNotifier<int>(0);
+  static void _notifyTransactionChanged() => transactionVersion.value++;
+  static double calcDeliveryCharge(List<CartItem> items) =>
+      items.isEmpty ? 0 : 3.15;
+
+  static final List<TransactionModel> transactions = [];
+
+  static void addProductToCart(
+    Product product, {
+    String size = "Normal",
+    String sweetness = "Standard",
+    double sugarPercent = 50.0,
+  }) {
+    final index = cartItems.indexWhere(
+      (item) => item.isSameLineAs(product, size, sweetness, sugarPercent),
+    );
+
+    if (index != -1) {
+      cartItems[index].qty += 1;
     } else {
-      final existingItemIndex = cartItems.indexWhere(
-        (item) => item.product.id == product.id,
+      cartItems.add(
+        CartItem(
+          id: DateTime.now().microsecondsSinceEpoch,
+          product: product,
+          qty: 1,
+          size: size,
+          sweetness: sweetness,
+          sugarPercent: sugarPercent,
+        ),
       );
-      if (existingItemIndex != -1) {
-        cartItems[existingItemIndex].qty += 1;
-      } else {
-        final newItem = CartItem(id: cartItems.length + 1, product: product);
-        newItem.qty = 1;
-        cartItems.add(newItem);
-      }
     }
-    getTotalItem();
-    getTotalOrderPrice();
+
+    _notifyCartChanged();
   }
 
   static void removeFromCart(CartItem item) {
@@ -41,16 +61,19 @@ class ProductRepo {
 
     getTotalItem();
     getTotalOrderPrice();
+    _notifyCartChanged();
   }
 
   static void clearCart() {
     cartItems.clear();
     getTotalOrderPrice();
     getTotalItem();
+    _notifyCartChanged();
   }
 
   static void deleteProductFromCart(int id) {
     cartItems.removeWhere((element) => element.id == id);
+    _notifyCartChanged();
   }
 
   static int getTotalItem() {

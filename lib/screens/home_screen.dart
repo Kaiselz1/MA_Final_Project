@@ -1,17 +1,8 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:pos_lab/controllers/counter_controller.dart';
-import 'package:pos_lab/models/product.dart';
-import 'package:pos_lab/models/user_profile.dart';
-import 'package:pos_lab/repositories/product_repo.dart';
-import 'package:pos_lab/repositories/user_repo.dart';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_lab/api/api_url.dart';
 import 'package:pos_lab/controllers/counter_controller.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/screens/category_screen.dart';
@@ -23,6 +14,10 @@ import 'package:pos_lab/widgets/product_grid_widget.dart';
 import 'package:pos_lab/widgets/search_widget.dart';
 import 'package:pos_lab/widgets/slider_widget.dart';
 import 'package:pos_lab/widgets/suggestion_widget.dart';
+import 'package:pos_lab/models/user_profile.dart';
+import 'package:pos_lab/repositories/user_repo.dart';
+import 'package:pos_lab/api/api_base_url.dart';
+import 'package:pos_lab/api/api_end_point.dart';
 import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
@@ -61,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen>
   Future<void> fetchProducts() async {
     try {
       final response = await http.get(
-        Uri.parse(ApiUrl.baseUrl + ApiUrl.products),
+        Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.products),
         headers: {"accept": "application/json"},
       );
 

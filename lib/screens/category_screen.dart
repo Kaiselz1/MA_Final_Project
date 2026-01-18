@@ -7,7 +7,8 @@ import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/category_card.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
-import 'package:pos_lab/api/api_url.dart';
+import 'package:pos_lab/api/api_base_url.dart';
+import 'package:pos_lab/api/api_end_point.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -55,7 +56,7 @@ class _CategoryScreen extends State<CategoryScreen> {
   Future<void> fetchCategories() async {
     try {
       final response = await http.get(
-        Uri.parse(ApiUrl.baseUrl + ApiUrl.categories),
+        Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.categories),
         headers: {"accept": "application/json"},
       );
 

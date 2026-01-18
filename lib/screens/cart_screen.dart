@@ -10,14 +10,6 @@ import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/ui_state/ui_status.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
 import 'package:pos_lab/widgets/cart_item_tile.dart';
-import "package:flutter/cupertino.dart";
-import "package:flutter/material.dart";
-import "package:pos_lab/models/cart_items.dart";
-import "package:pos_lab/repositories/product_repo.dart";
-import "package:pos_lab/screens/checkout_screen.dart";
-import "package:pos_lab/screens/setting_screen.dart";
-import "package:pos_lab/style/color.dart";
-import "package:pos_lab/widgets/header_widget.dart";
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -32,13 +24,13 @@ class _CartScreenState extends State<CartScreen>
   bool _listenerAttached = false;
   bool isLoading = true;
 
-  List<CartItem> get items => ProductRepo.cartItems;
+  // List<CartItem> get items => ProductRepo.cartItems;
 
-  double get subTotal =>
-      items.fold(0, (sum, cartItem) => sum + cartItem.totalPrice);
+  // double get subTotal =>
+  //     items.fold(0, (sum, cartItem) => sum + cartItem.totalPrice);
 
-  double get deliveryCharge => items.isEmpty ? 0 : 2;
-  double get grandTotal => subTotal + deliveryCharge;
+  // double get deliveryCharge => items.isEmpty ? 0 : 2;
+  // double get grandTotal => subTotal + deliveryCharge;
 
   @override
   void initState() {
@@ -74,36 +66,36 @@ class _CartScreenState extends State<CartScreen>
       }
     });
     // loadCartFromApi();
-    if (ProductRepo.cartItems.isEmpty && ProductRepo.products.isNotEmpty) {
-      ProductRepo.addProductToCart(ProductRepo.products[0]);
-      if (ProductRepo.products.length > 1) {
-        ProductRepo.addProductToCart(ProductRepo.products[1]);
-      }
-    }
-    isLoading = false; // remove this when use real API
+    // if (ProductRepo.cartItems.isEmpty && ProductRepo.products.isNotEmpty) {
+    //   ProductRepo.addProductToCart(ProductRepo.products[0]);
+    //   if (ProductRepo.products.length > 1) {
+    //     ProductRepo.addProductToCart(ProductRepo.products[1]);
+    //   }
+    // }
+    // isLoading = false; // remove this when use real API
   }
 
-  Future<void> increaseQty(CartItem item) async {
-    setState(() => item.qty += 1);
+  // Future<void> increaseQty(CartItem item) async {
+  //   setState(() => item.qty += 1);
 
-    // TODO: call API
-    // await api.updateCartItemQty(item.id, item.qty);
-  }
+  //   // TODO: call API
+  //   // await api.updateCartItemQty(item.id, item.qty);
+  // }
 
-  Future<void> decreaseQty(CartItem item) async {
-    if (item.qty <= 0) return;
-    setState(() => ProductRepo.removeFromCart(item));
+  // Future<void> decreaseQty(CartItem item) async {
+  //   if (item.qty <= 0) return;
+  //   setState(() => ProductRepo.removeFromCart(item));
 
-    // TODO: call API
-    // await api.updateCartItemQty(item.id, item.qty);
-  }
+  //   // TODO: call API
+  //   // await api.updateCartItemQty(item.id, item.qty);
+  // }
 
-  Future<void> deleteItem(CartItem item) async {
-    setState(() => ProductRepo.deleteProductFromCart(item.id));
+  // Future<void> deleteItem(CartItem item) async {
+  //   setState(() => ProductRepo.deleteProductFromCart(item.id));
 
-    // TODO: call API
-    // await api.deleteCartItem(item.id);
-  }
+  //   // TODO: call API
+  //   // await api.deleteCartItem(item.id);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -232,137 +224,4 @@ class _CartScreenState extends State<CartScreen>
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class _QtyButton extends StatelessWidget {
-  const _QtyButton({required this.icon, required this.onTap});
-
-  final IconData icon;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        width: 22,
-        height: 22,
-        decoration: BoxDecoration(
-          border: Border.all(color: const Color(0xFFB8AAA0)),
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Icon(icon, size: 14),
-      ),
-    );
-  }
-}
-
-class CartItemTile extends StatelessWidget {
-  final CartItem item;
-  final VoidCallback onIncrease;
-  final VoidCallback onDecrease;
-  final VoidCallback onDelete;
-
-  const CartItemTile({
-    super.key,
-    required this.item,
-    required this.onIncrease,
-    required this.onDecrease,
-    required this.onDelete,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Dismissible(
-      key: ValueKey(item.id),
-      direction: DismissDirection.endToStart,
-      background: Container(
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 20),
-        decoration: BoxDecoration(
-          color: Colors.red.shade400,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: const Icon(Icons.delete, color: Colors.white),
-      ),
-      onDismissed: (_) => onDelete(),
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 10,
-              color: Colors.black12,
-              offset: Offset(0, 6),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: const Color(0xFFEAE2DA),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  item.product.imageUrl,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(Icons.coffee, color: Colors.black54);
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.product.name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    '\$${item.product.price.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.brown,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              children: [
-                _QtyButton(icon: Icons.remove, onTap: onDecrease),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    '${item.qty}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                _QtyButton(icon: Icons.add, onTap: onIncrease),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
