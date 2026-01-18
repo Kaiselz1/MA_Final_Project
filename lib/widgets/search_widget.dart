@@ -49,7 +49,6 @@ class SearchBarWidget extends StatelessWidget {
                   onCategoryTap ??
                   () {
                     Get.find<MainController>().currentIndex.value = 4;
-                    
                   },
               icon: SvgPicture.asset(
                 'assets/icons/category.svg',
