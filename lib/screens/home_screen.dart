@@ -122,6 +122,20 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // ================= SUGGESTIONS =================
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 40, 20, 10),
+                        child: SuggestionList(
+                          suggestions: products
+                              .map((e) => e.name)
+                              .toSet()
+                              .toList(),
+                          onSelected: (categoryId) {
+                            print("Selected: $categoryId");
+                          },
+                        ),
+                      ),
+
                       // ================= IMAGE SLIDER =================
                       const ImageSlider(
                         images: [
@@ -133,20 +147,6 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
 
                       const SizedBox(height: 10),
-
-                      // ================= SUGGESTIONS =================
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-                        child: SuggestionList(
-                          suggestions: products
-                              .map((e) => e.name)
-                              .toSet()
-                              .toList(),
-                          onSelected: (categoryId) {
-                            print("Selected: $categoryId");
-                          },
-                        ),
-                      ),
 
                       // ================= PRODUCT GRID =================
                       Padding(
