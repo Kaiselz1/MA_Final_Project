@@ -7,11 +7,6 @@ import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/category_card.dart';
-import 'package:pos_lab/widgets/header_widget.dart';
-import 'package:pos_lab/api/api_base_url.dart';
-import 'package:pos_lab/api/api_end_point.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -26,6 +21,7 @@ class _CategoryScreen extends State<CategoryScreen> {
   bool isLoading = true;
   List<Category> categories = [];
 
+  final CategoryController categoryController = Get.put(CategoryController());
   // List<Category> categories = [
   //   {"name": "Iced Coffee", "icon": "assets/icons/iced_coffee.svg"},
   //   {"name": "Hot Coffee", "icon": "assets/icons/hot_coffee.svg"},
