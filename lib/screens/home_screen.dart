@@ -16,6 +16,7 @@ import 'package:pos_lab/widgets/slider_widget.dart';
 import 'package:pos_lab/widgets/suggestion_widget.dart';
 import 'package:pos_lab/models/user_profile.dart';
 import 'package:pos_lab/repositories/user_repo.dart';
+import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/api/api_base_url.dart';
 import 'package:pos_lab/api/api_end_point.dart';
 import 'package:http/http.dart' as http;
@@ -50,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen>
       print('object');
     }
     super.initState();
+    ProductRepo.selectedCategory.value = null; // show all products
     fetchProducts();
   }
 
@@ -161,19 +163,63 @@ class _HomeScreenState extends State<HomeScreen>
                       // ================= PRODUCT GRID =================
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 0),
-                        child: ProductGrid(
-                          products: products,
-                          onAdd: (product) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                    ProductDetailScreen(product: product),
-                              ),
+                        child: ValueListenableBuilder<String?>(
+                          valueListenable: ProductRepo.selectedCategory,
+                          builder: (_, __, ___) {
+                            final filtered =
+                                ProductRepo.selectedCategory.value == null
+                                ? products
+                                : products
+                                      .where(
+                                        (p) =>
+                                            p.categoryName ==
+                                            ProductRepo.selectedCategory.value,
+                                      )
+                                      .toList();
+
+                            if (filtered.isEmpty) {
+                              return const Center(
+                                child: Text(
+                                  "No products in this category",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              );
+                            }
+
+                            return ProductGrid(
+                              products: filtered,
+                              onAdd: (product) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        ProductDetailScreen(product: product),
+                                  ),
+                                );
+                              },
                             );
                           },
                         ),
                       ),
+
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 0),
+                      //   child: ProductGrid(
+                      //     products: products,
+                      //     onAdd: (product) {
+                      //       Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //           builder: (_) =>
+                      //               ProductDetailScreen(product: product),
+                      //         ),
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

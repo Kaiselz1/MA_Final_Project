@@ -5,6 +5,7 @@ import 'package:pos_lab/models/category.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/models/user_profile.dart';
 import 'package:pos_lab/repositories/user_repo.dart';
+import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/category_card.dart';
@@ -184,7 +185,10 @@ class _CategoryScreen extends State<CategoryScreen> {
                       title: category.name,
                       iconPath: category.imageUrl,
                       onTap: () {
-                        // Navigate to a filtered product list based on categoryData[index]['name']
+                        // Update selected category
+                        ProductRepo.selectedCategory.value = category.name;
+                        // Go back to home screen
+                        Navigator.pop(context);
                       },
                     );
                   },

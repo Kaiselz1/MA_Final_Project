@@ -18,6 +18,16 @@ class ProductRepo {
 
   static final List<TransactionModel> transactions = [];
 
+  // Add this for category filtering
+  static final ValueNotifier<String?> selectedCategory = ValueNotifier(null);
+
+  static List<Product> get filteredProducts {
+    if (selectedCategory.value == null) return products;
+    return products
+        .where((p) => p.categoryName == selectedCategory.value)
+        .toList();
+  }
+
   static void addProductToCart(
     Product product, {
     String size = "Normal",
