@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +6,6 @@ import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/models/user_profile.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/repositories/user_repo.dart';
-=======
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -16,7 +14,6 @@ import 'package:get/get.dart';
 import 'package:pos_lab/api/api_url.dart';
 import 'package:pos_lab/controllers/counter_controller.dart';
 import 'package:pos_lab/models/product.dart';
->>>>>>> new-api
 import 'package:pos_lab/screens/category_screen.dart';
 import 'package:pos_lab/screens/product_detail_screen.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
@@ -26,10 +23,7 @@ import 'package:pos_lab/widgets/product_grid_widget.dart';
 import 'package:pos_lab/widgets/search_widget.dart';
 import 'package:pos_lab/widgets/slider_widget.dart';
 import 'package:pos_lab/widgets/suggestion_widget.dart';
-<<<<<<< HEAD
-=======
 import 'package:http/http.dart' as http;
->>>>>>> new-api
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,16 +34,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
-<<<<<<< HEAD
-  Set<int> favoriteIds = {};
-  final CounterController counterController = Get.put(CounterController());
-  final user = UserRepo.profile;
-=======
   List<Product> products = [];
   bool isLoading = true;
   Set<int> favoriteIds = {};
   final CounterController counterController = Get.put(CounterController());
->>>>>>> new-api
 
   void addToFavorite(Product product) async {
     setState(() {
@@ -67,8 +55,6 @@ class _HomeScreenState extends State<HomeScreen>
       print('object');
     }
     super.initState();
-<<<<<<< HEAD
-=======
     fetchProducts();
   }
 
@@ -91,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen>
       debugPrint("API error: $e");
       setState(() => isLoading = false);
     }
->>>>>>> new-api
   }
 
   @override
@@ -107,7 +92,6 @@ class _HomeScreenState extends State<HomeScreen>
             children: [
               // ================= HEADER =================
               AppHeader(
-<<<<<<< HEAD
                 name: ValueListenableBuilder<UserProfile>(
                   valueListenable: UserRepo.profileNotifier,
                   builder: (_, user, __) => Text(user.name),
@@ -117,10 +101,6 @@ class _HomeScreenState extends State<HomeScreen>
                   builder: (_, user, __) => Text(user.email),
                 ),
 
-=======
-                name: 'John Noon',
-                email: 'johnnoon77@gmail.com',
->>>>>>> new-api
                 onMenuTap: () {
                   Navigator.push(
                     context,
@@ -150,27 +130,6 @@ class _HomeScreenState extends State<HomeScreen>
                   );
                 },
               ),
-<<<<<<< HEAD
-
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 40, 0, 10),
-                child: SuggestionList(
-                  suggestions: ProductRepo.products
-                      .map((e) => e.name)
-                      .toSet()
-                      .toList(),
-                  onSelected: (category) {
-                    print("Selected: $category");
-                  },
-                ),
-              ),
-
-              // ================= Body =================
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-=======
               Expanded(
                 child: SingleChildScrollView(
                   physics:
@@ -193,7 +152,6 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
 
                       // ================= IMAGE SLIDER =================
->>>>>>> new-api
                       const ImageSlider(
                         images: [
                           'assets/images/sliders/main_slide.png',
@@ -203,21 +161,6 @@ class _HomeScreenState extends State<HomeScreen>
                         ],
                       ),
 
-<<<<<<< HEAD
-                      SizedBox(height: 10),
-                      // Suggestions
-                      ProductGrid(
-                        products: ProductRepo.products,
-                        onAdd: (product) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ProductDetailScreen(product: product),
-                            ),
-                          );
-                        },
-=======
                       const SizedBox(height: 10),
 
                       // ================= PRODUCT GRID =================
@@ -235,7 +178,6 @@ class _HomeScreenState extends State<HomeScreen>
                             );
                           },
                         ),
->>>>>>> new-api
                       ),
                     ],
                   ),

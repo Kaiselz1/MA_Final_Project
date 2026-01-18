@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import 'package:flutter/material.dart';
 import 'package:pos_lab/controllers/cart_controller.dart';
 import 'package:pos_lab/dialogs/error_dialog.dart';
@@ -11,7 +10,6 @@ import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/ui_state/ui_status.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
 import 'package:pos_lab/widgets/cart_item_tile.dart';
-=======
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:pos_lab/models/cart_items.dart";
@@ -20,7 +18,6 @@ import "package:pos_lab/screens/checkout_screen.dart";
 import "package:pos_lab/screens/setting_screen.dart";
 import "package:pos_lab/style/color.dart";
 import "package:pos_lab/widgets/header_widget.dart";
->>>>>>> new-api
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -31,10 +28,8 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen>
     with AutomaticKeepAliveClientMixin {
-<<<<<<< HEAD
   late final CartController controller;
   bool _listenerAttached = false;
-=======
   bool isLoading = true;
 
   List<CartItem> get items => ProductRepo.cartItems;
@@ -44,12 +39,10 @@ class _CartScreenState extends State<CartScreen>
 
   double get deliveryCharge => items.isEmpty ? 0 : 2;
   double get grandTotal => subTotal + deliveryCharge;
->>>>>>> new-api
 
   @override
   void initState() {
     super.initState();
-<<<<<<< HEAD
     controller = CartController();
     controller.init();
   }
@@ -80,7 +73,6 @@ class _CartScreenState extends State<CartScreen>
           break;
       }
     });
-=======
     // loadCartFromApi();
     if (ProductRepo.cartItems.isEmpty && ProductRepo.products.isNotEmpty) {
       ProductRepo.addProductToCart(ProductRepo.products[0]);
@@ -111,13 +103,11 @@ class _CartScreenState extends State<CartScreen>
 
     // TODO: call API
     // await api.deleteCartItem(item.id);
->>>>>>> new-api
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-<<<<<<< HEAD
 
     return Scaffold(
       backgroundColor: AppColor.col8,
@@ -234,103 +224,6 @@ class _CartScreenState extends State<CartScreen>
                 ),
               );
             },
-=======
-    return Scaffold(
-      backgroundColor: AppColor.col8,
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              AppHeader(
-                name: 'John Noon',
-                email: 'johnnoon77@gmail.com',
-                onMenuTap: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: const Duration(milliseconds: 200),
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const SettingScreen(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                            const begin = Offset(-1.0, 0.0);
-                            const end = Offset.zero;
-                            const curve = Curves.easeOutCubic;
-
-                            var tween = Tween(
-                              begin: begin,
-                              end: end,
-                            ).chain(CurveTween(curve: curve));
-                            var offsetAnimation = animation.drive(tween);
-
-                            return SlideTransition(
-                              position: offsetAnimation,
-                              child: child,
-                            );
-                          },
-                    ),
-                  );
-                },
-                showSearchBar: false,
-              ),
-
-              const SizedBox(height: 40),
-              Expanded(
-                child: isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : SingleChildScrollView(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-                        child: Column(
-                          children: [
-                            // Cart items (REAL DATA)
-                            ...items.map(
-                              (item) => Padding(
-                                padding: const EdgeInsets.only(bottom: 8),
-                                child: CartItemTile(
-                                  item: item,
-                                  onIncrease: () => increaseQty(item),
-                                  onDecrease: () => decreaseQty(item),
-                                  onDelete: () => deleteItem(item),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              height: 46,
-                              child: ElevatedButton(
-                                onPressed: items.isEmpty
-                                    ? null
-                                    : () {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (_) =>
-                                                const CheckoutScreen(),
-                                          ),
-                                        );
-                                      },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColor.col4,
-                                  elevation: 1,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "Proceed to Checkout",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-              ),
-            ],
->>>>>>> new-api
           ),
         ],
       ),
@@ -340,8 +233,6 @@ class _CartScreenState extends State<CartScreen>
   @override
   bool get wantKeepAlive => true;
 }
-<<<<<<< HEAD
-=======
 
 class _QtyButton extends StatelessWidget {
   const _QtyButton({required this.icon, required this.onTap});
@@ -475,4 +366,3 @@ class CartItemTile extends StatelessWidget {
     );
   }
 }
->>>>>>> new-api

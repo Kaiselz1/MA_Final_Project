@@ -33,22 +33,11 @@ class CategoryCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-<<<<<<< HEAD
-            SvgPicture.asset(
-              iconPath,
-              height: 70,
-              width: 70,
-              colorFilter: ColorFilter.mode(
-                AppColor.col5, 
-                BlendMode.srcIn,
-              ),
-=======
             SvgPicture.network(
               iconPath,
               height: 70,
               width: 70,
               colorFilter: ColorFilter.mode(AppColor.col5, BlendMode.srcIn),
->>>>>>> new-api
             ),
             const SizedBox(height: 12),
             Text(
@@ -65,8 +54,4 @@ class CategoryCard extends StatelessWidget {
       ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> new-api

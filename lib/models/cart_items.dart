@@ -1,18 +1,13 @@
-<<<<<<< HEAD
 import 'package:flutter/foundation.dart';
-=======
->>>>>>> new-api
 import 'package:pos_lab/models/product.dart';
 
 class CartItem {
   final int id;
-<<<<<<< HEAD
   final Product product;
 
-
-  final String size;         
-  final String sweetness;    
-  final double sugarPercent; 
+  final String size;
+  final String sweetness;
+  final double sugarPercent;
 
   int _qty = 0;
   final ValueNotifier<int> qtyNotifier = ValueNotifier<int>(0);
@@ -41,19 +36,23 @@ class CartItem {
 
   String get strTotalPrice => '\$${totalPrice.toStringAsFixed(2)}';
 
-  bool isSameLineAs(Product p, String size, String sweetness, double sugarPercent) {
+  bool isSameLineAs(
+    Product p,
+    String size,
+    String sweetness,
+    double sugarPercent,
+  ) {
     return product.id == p.id &&
         this.size == size &&
         this.sweetness == sweetness &&
         this.sugarPercent == sugarPercent;
   }
-}
-=======
+
   int? _qty;
   final Product product;
   CartItem({required this.id, required this.product});
 
-  double get totalPrice{
+  double get totalPrice {
     return product.price * qty;
   }
 
@@ -61,8 +60,7 @@ class CartItem {
 
   set qty(int value) => _qty = value;
 
-  String get strTotalPrice{
+  String get strTotalPrice {
     return '\$${totalPrice.toStringAsFixed(2)}';
   }
 }
->>>>>>> new-api

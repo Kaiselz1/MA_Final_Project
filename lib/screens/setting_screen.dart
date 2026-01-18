@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:pos_lab/models/user_profile.dart';
 import 'package:pos_lab/repositories/user_repo.dart';
 import 'package:pos_lab/screens/edit_profile_screen.dart';
-=======
->>>>>>> new-api
 import 'package:pos_lab/screens/login_screen.dart';
 import 'package:pos_lab/style/color.dart';
 
@@ -40,13 +37,9 @@ class _SettingScreenState extends State<SettingScreen> {
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(12),
                       image: const DecorationImage(
-<<<<<<< HEAD
                         image: AssetImage(
                           'assets/images/profiles/johnnoon.png',
                         ),
-=======
-                        image: AssetImage('assets/images/profiles/johnnoon.png'),
->>>>>>> new-api
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -57,7 +50,6 @@ class _SettingScreenState extends State<SettingScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 10),
-<<<<<<< HEAD
                         ValueListenableBuilder<UserProfile>(
                           valueListenable: UserRepo.profileNotifier,
                           builder: (_, user, __) {
@@ -82,22 +74,6 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                             );
                           },
-=======
-                        Text(
-                          "John Noon",
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.col5,
-                          ),
-                        ),
-                        Text(
-                          "johnnoon77@gmail.com",
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 14,
-                          ),
->>>>>>> new-api
                         ),
                       ],
                     ),
@@ -116,19 +92,12 @@ class _SettingScreenState extends State<SettingScreen> {
                 height: 30,
                 child: ElevatedButton(
                   onPressed: () {
-<<<<<<< HEAD
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const EditProfileScreen(),
                       ),
                    
-=======
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
-                      (route) => false,
->>>>>>> new-api
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -140,15 +109,11 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   child: const Text(
                     "Edit Profile",
-<<<<<<< HEAD
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
-=======
-                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
->>>>>>> new-api
                   ),
                 ),
               ),
@@ -221,13 +186,9 @@ class _SettingScreenState extends State<SettingScreen> {
                     onPressed: () {
                       Navigator.pushAndRemoveUntil(
                         context,
-<<<<<<< HEAD
                         MaterialPageRoute(
                           builder: (context) => const LoginScreen(),
                         ),
-=======
-                        MaterialPageRoute(builder: (context) => const LoginScreen()),
->>>>>>> new-api
                         (route) => false,
                       );
                     },
@@ -240,15 +201,11 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                     child: const Text(
                       "Sign Out",
-<<<<<<< HEAD
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
-=======
-                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
->>>>>>> new-api
                     ),
                   ),
                 ),
@@ -299,15 +256,7 @@ class _SettingScreenState extends State<SettingScreen> {
           CircleAvatar(
             radius: 18,
             backgroundColor: AppColor.col5.withOpacity(0.1),
-<<<<<<< HEAD
             child: Icon(icon, size: 25, color: AppColor.col5),
-=======
-            child: Icon(
-              icon,
-              size: 25,
-              color: AppColor.col5,
-            ),
->>>>>>> new-api
           ),
           const SizedBox(width: 18),
           Expanded(
@@ -324,8 +273,4 @@ class _SettingScreenState extends State<SettingScreen> {
       ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> new-api

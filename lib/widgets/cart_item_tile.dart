@@ -56,8 +56,8 @@ class CartItemTile extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  item.product.image,
+                child: Image.network(
+                  item.product.imageUrl,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return const Icon(Icons.coffee, color: Colors.black54);
@@ -66,41 +66,38 @@ class CartItemTile extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 14),
-Expanded(
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        item.product.name,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.product.name,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
 
-      const SizedBox(height: 4),
+                  const SizedBox(height: 4),
 
-      Text(
-        'Size: ${item.size} • Sugar: ${item.sugarPercent.toInt()}% ',
-        style: const TextStyle(
-          fontSize: 13,
-          color: Colors.grey,
-        ),
-      ),
+                  Text(
+                    'Size: ${item.size} • Sugar: ${item.sugarPercent.toInt()}% ',
+                    style: const TextStyle(fontSize: 13, color: Colors.grey),
+                  ),
 
-      const SizedBox(height: 6),
+                  const SizedBox(height: 6),
 
-      Text(
-        '\$${item.product.price.toStringAsFixed(2)}',
-        style: const TextStyle(
-          fontSize: 14,
-          color: Colors.brown,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    ],
-  ),
-),
+                  Text(
+                    '\$${item.product.price.toStringAsFixed(2)}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.brown,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
             Row(
               children: [

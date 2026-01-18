@@ -1,9 +1,6 @@
 import "package:flutter/material.dart";
 import "package:pos_lab/screens/register_screen.dart";
-<<<<<<< HEAD
 import "package:pos_lab/services/auth_service.dart";
-=======
->>>>>>> new-api
 import "package:pos_lab/style/color.dart";
 import "package:pos_lab/widgets/nav_wiget.dart";
 
@@ -20,7 +17,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
   bool _rememberMe = false;
   bool _showForm = false;
-<<<<<<< HEAD
   bool _isLoading = false;
 
   final _emailController = TextEditingController();
@@ -75,8 +71,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-=======
->>>>>>> new-api
 
   @override
   Widget build(BuildContext context) {
@@ -161,23 +155,12 @@ class _LoginScreenState extends State<LoginScreen> {
               opacity: _logoMoved ? 0.0 : 1.0,
               child: Text.rich(
                 TextSpan(
-<<<<<<< HEAD
                   children: const [
-=======
-                  children: [
->>>>>>> new-api
                     TextSpan(
                       text: 'Evelyn Unmech\n',
                       style: TextStyle(fontSize: 30, letterSpacing: 2),
                     ),
-<<<<<<< HEAD
                     TextSpan(text: 'Café', style: TextStyle(fontSize: 25)),
-=======
-                    const TextSpan(
-                      text: 'Café',
-                      style: TextStyle(fontSize: 25),
-                    ),
->>>>>>> new-api
                   ],
                 ),
                 textAlign: TextAlign.center,
@@ -290,10 +273,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 30),
                     TextFormField(
-<<<<<<< HEAD
                       controller: _emailController,
-=======
->>>>>>> new-api
                       decoration: InputDecoration(
                         labelText: 'Email',
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -321,10 +301,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 30),
                     TextFormField(
-<<<<<<< HEAD
                       controller: _passwordController,
-=======
->>>>>>> new-api
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         labelText: 'Password',
@@ -374,14 +351,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               value: _rememberMe,
                               checkColor: Colors.white,
                               activeColor: AppColor.col4,
-<<<<<<< HEAD
                               side: const BorderSide(
                                 color: Colors.white,
-=======
-                              side: BorderSide(
-                                color: Colors
-                                    .white, // outline color when unchecked
->>>>>>> new-api
                                 width: 2,
                               ),
                               onChanged: (value) {
@@ -403,11 +374,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         GestureDetector(
                           onTap: () {},
-<<<<<<< HEAD
                           child: const Text(
-=======
-                          child: Text(
->>>>>>> new-api
                             "Forgot password?",
                             style: TextStyle(
                               color: Colors.white,
@@ -423,47 +390,12 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
 
-<<<<<<< HEAD
-=======
-          /// Back button
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 400),
-            top: _logoMoved ? 50 : -60, // move off-screen when not active
-            left: 20,
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: _logoMoved ? 1.0 : 0.0,
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _logoMoved = false;
-                    _darkenToTop = false;
-                  });
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.black38,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.white,
-                    size: 22,
-                  ),
-                ),
-              ),
-            ),
-          ),
-
->>>>>>> new-api
           /// Sign In Button
           Positioned(
             bottom: 120,
             left: 20,
             right: 20,
             child: ElevatedButton(
-<<<<<<< HEAD
               onPressed: _isLoading
                   ? null
                   : () {
@@ -477,23 +409,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         _handleLogin();
                       }
                     },
-=======
-              onPressed: () {
-                if (!_showForm) {
-                  setState(() {
-                    _logoMoved = true;
-                    _darkenToTop = true;
-                    _showForm = true;
-                  });
-                } else {
-                  // SECOND CLICK → go to HomeScreen
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => const NavWiget()),
-                  );
-                }
-              },
->>>>>>> new-api
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColor.col4,
                 shape: RoundedRectangleBorder(
@@ -501,7 +416,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 minimumSize: const Size.fromHeight(50),
               ),
-<<<<<<< HEAD
               child: _isLoading
                   ? const SizedBox(
                       height: 20,
@@ -515,12 +429,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Sign In',
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
-=======
-              child: const Text(
-                'Sign In',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
->>>>>>> new-api
             ),
           ),
 

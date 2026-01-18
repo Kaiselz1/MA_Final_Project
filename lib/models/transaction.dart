@@ -25,12 +25,7 @@ class TransactionModel {
   int get totalQty => items.fold(0, (sum, e) => sum + e.qty);
 }
 
-enum TransactionStatus {
-  paid,
-  pending,
-  cancelled,
-  refunded,
-}
+enum TransactionStatus { paid, pending, cancelled, refunded }
 
 class TransactionItem {
   final int productId;
@@ -39,9 +34,9 @@ class TransactionItem {
   final double unitPrice;
   final int qty;
 
-  final String size;        
-  final String sweetness;    
-  final double sugarPercent; 
+  final String size;
+  final String sweetness;
+  final double sugarPercent;
 
   const TransactionItem({
     required this.productId,
@@ -60,7 +55,7 @@ class TransactionItem {
     return TransactionItem(
       productId: c.product.id,
       name: c.product.name,
-      image: c.product.image,
+      image: c.product.imageUrl,
       unitPrice: c.product.price,
       qty: c.qty,
       size: c.size,
