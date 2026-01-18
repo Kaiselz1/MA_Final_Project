@@ -54,26 +54,26 @@ class _HomeScreenState extends State<HomeScreen>
     // fetchProducts();
   }
 
-  Future<void> fetchProducts() async {
-    try {
-      final response = await http.get(
-        Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.products),
-        headers: {"accept": "application/json"},
-      );
+  // Future<void> fetchProducts() async {
+  //   try {
+  //     final response = await http.get(
+  //       Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.products),
+  //       headers: {"accept": "application/json"},
+  //     );
 
-      if (response.statusCode == 200) {
-        final List data = jsonDecode(response.body);
-        setState(() {
-          products = data.map((e) => Product.fromJson(e)).toList();
-          debugPrint("Grid received ${products.length} products");
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      debugPrint("API error: $e");
-      setState(() => isLoading = false);
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       final List data = jsonDecode(response.body);
+  //       setState(() {
+  //         products = data.map((e) => Product.fromJson(e)).toList();
+  //         debugPrint("Grid received ${products.length} products");
+  //         isLoading = false;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     debugPrint("API error: $e");
+  //     setState(() => isLoading = false);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen>
                     children: [
                       // ================= SUGGESTIONS =================
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 40, 20, 10),
+                        padding: const EdgeInsets.fromLTRB(0, 20, 20, 10),
                         child: SuggestionList(
                           suggestions: [
                             "All", // add "All" at the start
