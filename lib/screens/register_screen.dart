@@ -15,11 +15,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _isLoading = false;
+  bool _showForm = false;
 
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Trigger animation after build
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (mounted) {
+        setState(() {
+          _showForm = true;
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -82,8 +96,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (result['success']) {
       _showSnackBar(result['message'] ?? 'Registration successful!');
 
-      // Navigate to login after short delay
-      await Future.delayed(const Duration(seconds: 2));
+      // Animate out before navigation
+      setState(() => _showForm = false);
+      await Future.delayed(const Duration(milliseconds: 500));
       if (!mounted) return;
 
       Navigator.pushReplacement(
@@ -108,6 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: Stack(
@@ -208,8 +224,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
 
-          Positioned(
-            top: 290,
+          // Animated Form Container
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeInOut,
+            top: _showForm ? 290 : screenHeight,
+            left: 0,
+            right: 0,
             child: Container(
               width: screenWidth,
               height: 555,
@@ -426,8 +447,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
 
-          Positioned(
-            bottom: 60,
+          // Animated Sign In Link
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeInOut,
+            bottom: _showForm ? 60 : -100,
             left: 0,
             right: 0,
             child: Row(
@@ -438,7 +462,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   style: TextStyle(color: Colors.white),
                 ),
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
+                    setState(() => _showForm = false);
+                    await Future.delayed(const Duration(milliseconds: 500));
+                    if (!mounted) return;
+
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

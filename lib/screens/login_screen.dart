@@ -52,6 +52,15 @@ class _LoginScreenState extends State<LoginScreen> {
         _showSnackBar('Debug mode login successful!');
       }
 
+      // Animate out before navigation
+      setState(() {
+        _logoMoved = false;
+        _darkenToTop = false;
+        _showForm = false;
+      });
+      await Future.delayed(const Duration(milliseconds: 600));
+      if (!mounted) return;
+
       // Navigate to home
       Navigator.pushReplacement(
         context,
@@ -391,7 +400,9 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
 
           /// Sign In Button
-          Positioned(
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
             bottom: 120,
             left: 20,
             right: 20,
@@ -432,8 +443,11 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
 
-          Positioned(
-            bottom: 60,
+          /// Sign Up Link
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            bottom: _logoMoved ? 60 : 60,
             left: 0,
             right: 0,
             child: Row(
