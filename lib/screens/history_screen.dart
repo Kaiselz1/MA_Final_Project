@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_lab/controllers/counter_controller.dart';
+<<<<<<< HEAD
 import 'package:pos_lab/models/user_profile.dart';
 import 'package:pos_lab/repositories/user_repo.dart';
+=======
+>>>>>>> new-api
 import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
@@ -41,6 +44,7 @@ class _HistoryScreen extends State<HistoryScreen>
             children: [
               // ================= HEADER =================
               AppHeader(
+<<<<<<< HEAD
               name: ValueListenableBuilder<UserProfile>(
               valueListenable: UserRepo.profileNotifier,
               builder: (_, user, __) => Text(user.name),
@@ -49,6 +53,10 @@ class _HistoryScreen extends State<HistoryScreen>
               valueListenable: UserRepo.profileNotifier,
               builder: (_, user, __) => Text(user.email),
             ),
+=======
+                name: 'John Noon',
+                email: 'johnnoon77@gmail.com',
+>>>>>>> new-api
                 onMenuTap: () {
                   Navigator.push(
                     context,

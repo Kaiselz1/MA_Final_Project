@@ -7,11 +7,15 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onAdd;
 
+<<<<<<< HEAD
   const ProductCard({
     super.key,
     required this.product,
     required this.onAdd,
   });
+=======
+  const ProductCard({super.key, required this.product, required this.onAdd});
+>>>>>>> new-api
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +24,15 @@ class ProductCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: const [
+<<<<<<< HEAD
           BoxShadow(
             color: Colors.black45,
             blurRadius: 2,
             offset: Offset(2, 2),
           ),
+=======
+          BoxShadow(color: Colors.black45, blurRadius: 2, offset: Offset(2, 2)),
+>>>>>>> new-api
         ],
       ),
       child: Column(
@@ -33,17 +41,26 @@ class ProductCard extends StatelessWidget {
         children: [
           // Image + favorite icon
           ClipRRect(
+<<<<<<< HEAD
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(12),
             ),
+=======
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+>>>>>>> new-api
             child: Stack(
               children: [
                 Container(
                   height: 120,
                   width: double.infinity,
                   color: const Color(0xFFF3F4F5),
+<<<<<<< HEAD
                   child: Image.asset(
                     product.image,
+=======
+                  child: Image.network(
+                    product.imageUrl,
+>>>>>>> new-api
                     fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => const Icon(
                       Icons.image_not_supported,
@@ -90,7 +107,11 @@ class ProductCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
+<<<<<<< HEAD
                   product.category,
+=======
+                  product.categoryName,
+>>>>>>> new-api
                   style: const TextStyle(
                     fontSize: 12,
                     color: Colors.grey,

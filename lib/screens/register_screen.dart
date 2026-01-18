@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pos_lab/screens/login_screen.dart';
+<<<<<<< HEAD
 import 'package:pos_lab/services/auth_service.dart';
+=======
+>>>>>>> new-api
 import 'package:pos_lab/style/color.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -13,6 +16,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+<<<<<<< HEAD
   bool _isLoading = false;
 
   final _usernameController = TextEditingController();
@@ -84,6 +88,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
+=======
+  bool _darkenToTop = false;
+>>>>>>> new-api
 
   @override
   Widget build(BuildContext context) {
@@ -103,17 +110,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
 
+<<<<<<< HEAD
           Container(
+=======
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+>>>>>>> new-api
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
+<<<<<<< HEAD
                   Colors.black.withOpacity(0.3),
                   Colors.black.withOpacity(0.6),
                   Colors.black.withOpacity(0.9),
                 ],
                 stops: const [0.0, 0.3, 0.6],
+=======
+                  Colors.black.withOpacity(_darkenToTop ? 0.3 : 0.4),
+                  Colors.black.withOpacity(_darkenToTop ? 0.6 : 0.7),
+                  Colors.black.withOpacity(_darkenToTop ? 0.9 : 1),
+                ],
+                stops: _darkenToTop ? [0.0, 0.3, 0.6] : [0.2, 0.5, 0.8],
+>>>>>>> new-api
               ),
             ),
           ),
@@ -228,7 +249,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 20),
 
                       TextFormField(
+<<<<<<< HEAD
                         controller: _usernameController,
+=======
+>>>>>>> new-api
                         decoration: InputDecoration(
                           labelText: 'Username',
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -257,8 +281,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 25),
 
                       TextFormField(
+<<<<<<< HEAD
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
+=======
+>>>>>>> new-api
                         decoration: InputDecoration(
                           labelText: 'Email',
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -286,8 +313,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 25),
 
+<<<<<<< HEAD
                       TextFormField(
                         controller: _passwordController,
+=======
+                      // Password
+                      TextFormField(
+>>>>>>> new-api
                         obscureText: _obscurePassword,
                         decoration: InputDecoration(
                           labelText: 'Password',
@@ -330,7 +362,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 25),
 
                       TextFormField(
+<<<<<<< HEAD
                         controller: _confirmPasswordController,
+=======
+>>>>>>> new-api
                         obscureText: _obscureConfirmPassword,
                         decoration: InputDecoration(
                           labelText: 'Confirm Password',
@@ -374,7 +409,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 25),
 
                       ElevatedButton(
+<<<<<<< HEAD
                         onPressed: _isLoading ? null : _handleRegister,
+=======
+                        onPressed: () {
+                          // TODO: handle register logic
+                        },
+>>>>>>> new-api
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColor.col4,
                           shape: RoundedRectangleBorder(
@@ -382,6 +423,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           minimumSize: const Size.fromHeight(50),
                         ),
+<<<<<<< HEAD
                         child: _isLoading
                             ? const SizedBox(
                                 height: 20,
@@ -398,6 +440,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: Colors.white,
                                 ),
                               ),
+=======
+                        child: const Text(
+                          'Register',
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+>>>>>>> new-api
                       ),
                     ],
                   ),

@@ -5,8 +5,13 @@ import 'package:pos_lab/controllers/main_controller.dart';
 import 'package:pos_lab/screens/cart_screen.dart';
 import 'package:pos_lab/screens/category_screen.dart';
 import 'package:pos_lab/screens/favorite_screen.dart';
+<<<<<<< HEAD
 import 'package:pos_lab/screens/home_screen.dart';
 import 'package:pos_lab/screens/transaction_history_screen.dart';
+=======
+import 'package:pos_lab/screens/history_screen.dart';
+import 'package:pos_lab/screens/home_screen.dart';
+>>>>>>> new-api
 import 'package:pos_lab/style/color.dart';
 
 class NavWiget extends StatefulWidget {
@@ -22,6 +27,7 @@ class _NavWigetState extends State<NavWiget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       body: Obx(
         () => IndexedStack(
             index: controller.currentIndex.value,
@@ -40,10 +46,81 @@ class _NavWigetState extends State<NavWiget> {
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           currentIndex: controller.currentIndex.value > 3 ? 0 : controller.currentIndex.value,
+=======
+      // body: Obx(
+      //   () => Navigator(
+      //     onGenerateRoute: (settings) => MaterialPageRoute(builder: (context) => IndexedStack(
+      //         index: controller.currentIndex.value,
+      //         children: [
+      //           HomeScreen(),
+      //           CartScreen(),
+      //           HistoryScreen(),
+      //           FavoriteScreen(),
+      //           CategoryScreen()
+      //         ],
+      //       ),),
+      //   ),
+      body: Obx(() {
+        return IndexedStack(
+          index: controller.currentIndex.value,
+          children: const [
+            HomeScreen(),
+            CartScreen(),
+            HistoryScreen(),
+            FavoriteScreen(),
+            CategoryScreen(),
+          ],
+        );
+      }),
+      //   bottomNavigationBar: Obx(
+      //     () => BottomNavigationBar(
+      //       currentIndex: controller.currentIndex.value > 3
+      //           ? 0
+      //           : controller.currentIndex.value,
+      //       onTap: controller.onChanged,
+      //       type: BottomNavigationBarType.fixed,
+      //       selectedItemColor: AppColor.col5,
+      //       unselectedItemColor: Colors.grey,
+      //       selectedIconTheme: const IconThemeData(size: 25),
+      //       unselectedIconTheme: const IconThemeData(size: 20),
+      //       selectedLabelStyle: const TextStyle(
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 14,
+      //       ),
+      //       items: [
+      //         BottomNavigationBarItem(
+      //           icon: Icon(CupertinoIcons.home),
+      //           activeIcon: Icon(CupertinoIcons.house_fill),
+
+      //           label: 'Home',
+      //         ),
+      //         BottomNavigationBarItem(
+      //           icon: Icon(CupertinoIcons.cart),
+      //           activeIcon: Icon(CupertinoIcons.cart_fill),
+      //           label: 'Ordered',
+      //         ),
+      //         BottomNavigationBarItem(
+      //           icon: Icon(CupertinoIcons.clock),
+      //           activeIcon: Icon(CupertinoIcons.clock_fill),
+      //           label: 'History',
+      //         ),
+      //         BottomNavigationBarItem(
+      //           icon: Icon(CupertinoIcons.heart),
+      //           activeIcon: Icon(CupertinoIcons.heart_fill),
+      //           label: 'Favorite',
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      bottomNavigationBar: Obx(() {
+        return BottomNavigationBar(
+          currentIndex: controller.currentIndex.value,
+>>>>>>> new-api
           onTap: controller.onChanged,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: AppColor.col5,
           unselectedItemColor: Colors.grey,
+<<<<<<< HEAD
           selectedIconTheme: const IconThemeData(size: 25),
           unselectedIconTheme: const IconThemeData(size: 20),
           selectedLabelStyle: const TextStyle(
@@ -55,12 +132,22 @@ class _NavWigetState extends State<NavWiget> {
               icon: Icon(CupertinoIcons.home),
               activeIcon: Icon(CupertinoIcons.house_fill),
 
+=======
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.home),
+              activeIcon: Icon(CupertinoIcons.house_fill),
+>>>>>>> new-api
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.cart),
               activeIcon: Icon(CupertinoIcons.cart_fill),
+<<<<<<< HEAD
               label: 'Cart',
+=======
+              label: 'Ordered',
+>>>>>>> new-api
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.clock),
@@ -73,8 +160,13 @@ class _NavWigetState extends State<NavWiget> {
               label: 'Favorite',
             ),
           ],
+<<<<<<< HEAD
         ),
       ),
+=======
+        );
+      }),
+>>>>>>> new-api
     );
   }
 }

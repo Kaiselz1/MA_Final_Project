@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:flutter/foundation.dart';
 import 'package:pos_lab/models/cart_items.dart';
 import 'package:pos_lab/models/product.dart';
@@ -252,6 +253,34 @@ class ProductRepo {
     }
 
     _notifyCartChanged();
+=======
+import 'package:pos_lab/models/cart_items.dart';
+import 'package:pos_lab/models/product.dart';
+
+class ProductRepo {
+  static List<Product> products = [];
+  static List<CartItem> cartItems = [];
+
+  static void addProductToCart(Product product) {
+    if (cartItems.isEmpty) {
+      CartItem item = CartItem(id: 1, product: product);
+      item.qty = 1;
+      cartItems.add(item);
+    } else {
+      final existingItemIndex = cartItems.indexWhere(
+        (item) => item.product.id == product.id,
+      );
+      if (existingItemIndex != -1) {
+        cartItems[existingItemIndex].qty += 1;
+      } else {
+        final newItem = CartItem(id: cartItems.length + 1, product: product);
+        newItem.qty = 1;
+        cartItems.add(newItem);
+      }
+    }
+    getTotalItem();
+    getTotalOrderPrice();
+>>>>>>> new-api
   }
 
   static void removeFromCart(CartItem item) {
@@ -269,19 +298,28 @@ class ProductRepo {
 
     getTotalItem();
     getTotalOrderPrice();
+<<<<<<< HEAD
     _notifyCartChanged();
+=======
+>>>>>>> new-api
   }
 
   static void clearCart() {
     cartItems.clear();
     getTotalOrderPrice();
     getTotalItem();
+<<<<<<< HEAD
     _notifyCartChanged();
+=======
+>>>>>>> new-api
   }
 
   static void deleteProductFromCart(int id) {
     cartItems.removeWhere((element) => element.id == id);
+<<<<<<< HEAD
     _notifyCartChanged();
+=======
+>>>>>>> new-api
   }
 
   static int getTotalItem() {
@@ -299,6 +337,7 @@ class ProductRepo {
     }
     return price;
   }
+<<<<<<< HEAD
 
   static TransactionModel createTransactionFromCart({
     TransactionStatus status = TransactionStatus.paid,
@@ -336,4 +375,6 @@ class ProductRepo {
     _notifyTransactionChanged();
     return trx;
   }
+=======
+>>>>>>> new-api
 }

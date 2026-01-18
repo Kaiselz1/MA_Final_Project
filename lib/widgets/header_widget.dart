@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:pos_lab/style/color.dart';
 
 class AppHeader extends StatelessWidget {
+<<<<<<< HEAD
   final Widget name;
   final Widget email;
+=======
+  final String name;
+  final String email;
+>>>>>>> new-api
   final VoidCallback? onMenuTap;
   final Function(String)? onSearchChanged;
   final VoidCallback? onCategoryTap;
@@ -21,6 +26,10 @@ class AppHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> new-api
     return SizedBox(
       child: Stack(
         clipBehavior: Clip.none,
@@ -46,21 +55,36 @@ class AppHeader extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+<<<<<<< HEAD
                     DefaultTextStyle(
+=======
+                    Text(
+                      name,
+>>>>>>> new-api
                       style: TextStyle(
                         color: AppColor.col4,
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                       ),
+<<<<<<< HEAD
                       child: name,
                     ),
                     const SizedBox(height: 2),
                     DefaultTextStyle(
+=======
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      email,
+>>>>>>> new-api
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 12,
                       ),
+<<<<<<< HEAD
                       child: email,
+=======
+>>>>>>> new-api
                     ),
                   ],
                 ),
@@ -89,17 +113,32 @@ class AppHeader extends StatelessWidget {
     );
   }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> new-api
 class AppTitleHeader extends StatelessWidget {
   final String title;
   final VoidCallback? onBackTap;
 
+<<<<<<< HEAD
   const AppTitleHeader({super.key, required this.title, this.onBackTap});
+=======
+  const AppTitleHeader({
+    super.key,
+    required this.title,
+    this.onBackTap,
+  });
+>>>>>>> new-api
 
   @override
   Widget build(BuildContext context) {
     return Container(
+<<<<<<< HEAD
       height: 120,
+=======
+      height: 120, 
+>>>>>>> new-api
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [AppColor.col6, AppColor.col5],
@@ -141,3 +180,8 @@ class AppTitleHeader extends StatelessWidget {
     );
   }
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> new-api

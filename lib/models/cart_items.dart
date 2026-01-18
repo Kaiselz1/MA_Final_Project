@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 import 'package:flutter/foundation.dart';
+=======
+>>>>>>> new-api
 import 'package:pos_lab/models/product.dart';
 
 class CartItem {
   final int id;
+<<<<<<< HEAD
   final Product product;
 
 
@@ -44,3 +48,21 @@ class CartItem {
         this.sugarPercent == sugarPercent;
   }
 }
+=======
+  int? _qty;
+  final Product product;
+  CartItem({required this.id, required this.product});
+
+  double get totalPrice{
+    return product.price * qty;
+  }
+
+  int get qty => _qty ?? 0;
+
+  set qty(int value) => _qty = value;
+
+  String get strTotalPrice{
+    return '\$${totalPrice.toStringAsFixed(2)}';
+  }
+}
+>>>>>>> new-api
