@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_lab/controllers/main_controller.dart';
 import 'package:pos_lab/models/product.dart';
+import 'package:pos_lab/models/user_profile.dart';
+import 'package:pos_lab/repositories/user_repo.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/category_card.dart';
@@ -51,8 +53,14 @@ class _CategoryScreen extends State<CategoryScreen> {
             children: [
               // ================= HEADER =================
               AppHeader(
-                name: 'John Noon',
-                email: 'johnnoon77@gmail.com',
+                name: ValueListenableBuilder<UserProfile>(
+                  valueListenable: UserRepo.profileNotifier,
+                  builder: (_, user, __) => Text(user.name),
+                ),
+                email: ValueListenableBuilder<UserProfile>(
+                  valueListenable: UserRepo.profileNotifier,
+                  builder: (_, user, __) => Text(user.email),
+                ),
                 onMenuTap: () {
                   Navigator.push(
                     context,

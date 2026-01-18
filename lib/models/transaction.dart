@@ -39,10 +39,9 @@ class TransactionItem {
   final double unitPrice;
   final int qty;
 
-  /// Customization snapshot (from ProductDetailScreen)
-  final String size;         // "Normal", "Large", etc.
-  final String sweetness;    // "Standard", "Less", "None", etc.
-  final double sugarPercent; // 0 - 100
+  final String size;        
+  final String sweetness;    
+  final double sugarPercent; 
 
   const TransactionItem({
     required this.productId,

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_lab/controllers/counter_controller.dart';
 import 'package:pos_lab/models/product.dart';
+import 'package:pos_lab/models/user_profile.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
+import 'package:pos_lab/repositories/user_repo.dart';
 import 'package:pos_lab/screens/category_screen.dart';
 import 'package:pos_lab/screens/product_detail_screen.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
@@ -24,8 +26,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
   Set<int> favoriteIds = {};
-      final CounterController counterController = Get.put(CounterController());
-
+  final CounterController counterController = Get.put(CounterController());
+  final user = UserRepo.profile;
 
   void addToFavorite(Product product) async {
     setState(() {
@@ -58,8 +60,15 @@ class _HomeScreenState extends State<HomeScreen>
             children: [
               // ================= HEADER =================
               AppHeader(
-                name: 'John Noon',
-                email: 'johnnoon77@gmail.com',
+                name: ValueListenableBuilder<UserProfile>(
+                  valueListenable: UserRepo.profileNotifier,
+                  builder: (_, user, __) => Text(user.name),
+                ),
+                email: ValueListenableBuilder<UserProfile>(
+                  valueListenable: UserRepo.profileNotifier,
+                  builder: (_, user, __) => Text(user.email),
+                ),
+
                 onMenuTap: () {
                   Navigator.push(
                     context,
@@ -143,10 +152,10 @@ class _HomeScreenState extends State<HomeScreen>
               print("Searching: $value");
             },
             onCategoryTap: () {
-              Navigator.of(context, rootNavigator: false).push(
-                MaterialPageRoute(builder: (_) => const CategoryScreen()),
-              );
-
+              Navigator.of(
+                context,
+                rootNavigator: false,
+              ).push(MaterialPageRoute(builder: (_) => const CategoryScreen()));
             },
           ),
         ],

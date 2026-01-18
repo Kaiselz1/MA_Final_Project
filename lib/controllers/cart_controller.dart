@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pos_lab/models/cart_items.dart';
+import 'package:pos_lab/models/transaction.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/screens/checkout_screen.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
@@ -106,9 +107,7 @@ class CartController extends ChangeNotifier {
       ),
     );
   }
-
-
-
+  
 
   
 }
