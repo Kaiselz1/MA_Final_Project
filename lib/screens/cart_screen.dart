@@ -3,7 +3,9 @@ import 'package:pos_lab/controllers/cart_controller.dart';
 import 'package:pos_lab/dialogs/error_dialog.dart';
 import 'package:pos_lab/dialogs/loading_dialog.dart';
 import 'package:pos_lab/dialogs/success_dialog.dart';
+import 'package:pos_lab/models/user_profile.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
+import 'package:pos_lab/repositories/user_repo.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/ui_state/ui_status.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
@@ -65,8 +67,14 @@ class _CartScreenState extends State<CartScreen>
       body: Column(
         children: [
           AppHeader(
-            name: 'John Noon',
-            email: 'johnnoon77@gmail.com',
+            name: ValueListenableBuilder<UserProfile>(
+              valueListenable: UserRepo.profileNotifier,
+              builder: (_, user, __) => Text(user.name),
+            ),
+            email: ValueListenableBuilder<UserProfile>(
+              valueListenable: UserRepo.profileNotifier,
+              builder: (_, user, __) => Text(user.email),
+            ),
             onMenuTap: () => controller.openSettings(context),
             showSearchBar: false,
           ),

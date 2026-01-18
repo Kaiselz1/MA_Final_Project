@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pos_lab/controllers/main_controller.dart';
+import 'package:pos_lab/dialogs/success_dialog.dart';
 import 'package:pos_lab/models/cart_items.dart';
 import 'package:pos_lab/models/transaction.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
@@ -17,8 +18,6 @@ class CheckoutScreen extends StatelessWidget {
     required this.onDelete,
     required this.onConfirmPayment,
   });
-
-
 
   final VoidCallback onBackTap;
   final VoidCallback onConfirmPayment;
@@ -40,8 +39,7 @@ class CheckoutScreen extends StatelessWidget {
             child: ValueListenableBuilder<int>(
               valueListenable: ProductRepo.cartVersion,
               builder: (_, __, ___) {
-
-                final liveItems = ProductRepo.cartItems; 
+                final liveItems = ProductRepo.cartItems;
 
                 if (liveItems.isEmpty) {
                   return const Center(
@@ -118,11 +116,15 @@ class CheckoutScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: liveItems.isEmpty
                           ? null
-                          : () {
+                          : () async {
                               ProductRepo.createTransactionFromCart(
                                 status: TransactionStatus.paid,
                               );
+
                               ProductRepo.clearCart();
+
+                              await showSuccess(context, "Payment successful");
+
                               final main = Get.find<MainController>();
                               main.currentIndex.value = 2;
 
