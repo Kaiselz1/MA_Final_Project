@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pos_lab/controllers/cart_controller.dart';
 import 'package:pos_lab/dialogs/error_dialog.dart';
 import 'package:pos_lab/dialogs/loading_dialog.dart';
-import 'package:pos_lab/models/user_profile.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
-import 'package:pos_lab/repositories/user_repo.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/ui_state/ui_status.dart';
-import 'package:pos_lab/widgets/header_widget.dart';
 import 'package:pos_lab/widgets/cart_item_tile.dart';
 
 class CartScreen extends StatefulWidget {
@@ -22,14 +19,6 @@ class _CartScreenState extends State<CartScreen>
   late final CartController controller;
   bool _listenerAttached = false;
   bool isLoading = true;
-
-  // List<CartItem> get items => ProductRepo.cartItems;
-
-  // double get subTotal =>
-  //     items.fold(0, (sum, cartItem) => sum + cartItem.totalPrice);
-
-  // double get deliveryCharge => items.isEmpty ? 0 : 2;
-  // double get grandTotal => subTotal + deliveryCharge;
 
   @override
   void initState() {
@@ -64,37 +53,7 @@ class _CartScreenState extends State<CartScreen>
           break;
       }
     });
-    // loadCartFromApi();
-    // if (ProductRepo.cartItems.isEmpty && ProductRepo.products.isNotEmpty) {
-    //   ProductRepo.addProductToCart(ProductRepo.products[0]);
-    //   if (ProductRepo.products.length > 1) {
-    //     ProductRepo.addProductToCart(ProductRepo.products[1]);
-    //   }
-    // }
-    // isLoading = false; // remove this when use real API
   }
-
-  // Future<void> increaseQty(CartItem item) async {
-  //   setState(() => item.qty += 1);
-
-  //   // TODO: call API
-  //   // await api.updateCartItemQty(item.id, item.qty);
-  // }
-
-  // Future<void> decreaseQty(CartItem item) async {
-  //   if (item.qty <= 0) return;
-  //   setState(() => ProductRepo.removeFromCart(item));
-
-  //   // TODO: call API
-  //   // await api.updateCartItemQty(item.id, item.qty);
-  // }
-
-  // Future<void> deleteItem(CartItem item) async {
-  //   setState(() => ProductRepo.deleteProductFromCart(item.id));
-
-  //   // TODO: call API
-  //   // await api.deleteCartItem(item.id);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -104,29 +63,6 @@ class _CartScreenState extends State<CartScreen>
       backgroundColor: AppColor.col8,
       body: Column(
         children: [
-          AppHeader(
-            name: ValueListenableBuilder<UserProfile>(
-              valueListenable: UserRepo.profileNotifier,
-              builder: (_, user, __) => Text(user.name),
-            ),
-            email: ValueListenableBuilder<UserProfile>(
-              valueListenable: UserRepo.profileNotifier,
-              builder: (_, user, __) => Text(user.email),
-            ),
-            onMenuTap: () => controller.openSettings(context),
-            showSearchBar: false,
-          ),
-          // ValueListenableBuilder<UserProfile>(
-          //   valueListenable: UserRepo.profileNotifier,
-          //   builder: (_, user, __) {
-          //     return AppHeader(
-          //       name: user.name,
-          //       email: user.email,
-          //       onMenuTap: () => controller.openSettings(context),
-          //       showSearchBar: false,
-          //     );
-          //   },
-          // ),
           const SizedBox(height: 20),
 
           Expanded(

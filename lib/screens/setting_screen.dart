@@ -51,9 +51,20 @@ class _SettingScreenState extends State<SettingScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 10),
-                        ValueListenableBuilder<UserProfile>(
+                        ValueListenableBuilder<UserProfile?>(
                           valueListenable: UserRepo.profileNotifier,
                           builder: (_, user, __) {
+                            if (user == null) {
+                              return Text(
+                                "Admin",
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.col5,
+                                ),
+                              );
+                            }
+
                             return Text(
                               user.name,
                               style: TextStyle(
@@ -64,9 +75,20 @@ class _SettingScreenState extends State<SettingScreen> {
                             );
                           },
                         ),
-                        ValueListenableBuilder<UserProfile>(
+
+                        ValueListenableBuilder<UserProfile?>(
                           valueListenable: UserRepo.profileNotifier,
                           builder: (_, user, __) {
+                            if (user == null) {
+                              return Text(
+                                "guest@example.com",
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 14,
+                                ),
+                              );
+                            }
+
                             return Text(
                               user.email,
                               style: TextStyle(

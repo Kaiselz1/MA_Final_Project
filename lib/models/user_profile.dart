@@ -4,12 +4,25 @@ class UserProfile {
   final String phone;
   final String address;
 
-  const UserProfile({
+  UserProfile({
     required this.name,
     required this.email,
     required this.phone,
     required this.address,
   });
+
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
+    return UserProfile(
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      phone: json['phone'] ?? '',
+      address: json['address'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'name': name, 'email': email, 'phone': phone, 'address': address};
+  }
 
   UserProfile copyWith({
     String? name,
