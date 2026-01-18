@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_lab/controllers/counter_controller.dart';
+import 'package:pos_lab/controllers/product_controller.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/screens/category_screen.dart';
 import 'package:pos_lab/screens/product_detail_screen.dart';
@@ -35,6 +36,9 @@ class _HomeScreenState extends State<HomeScreen>
   Set<int> favoriteIds = {};
   final CounterController counterController = Get.put(CounterController());
 
+  // Product Controller
+  final ProductController productController = Get.find<ProductController>();
+
   void addToFavorite(Product product) async {
     setState(() {
       if (favoriteIds.contains(product.id)) {
@@ -52,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen>
     }
     super.initState();
     ProductRepo.selectedCategory.value = null; // show all products
-    fetchProducts();
+    // fetchProducts();
   }
 
   Future<void> fetchProducts() async {
@@ -129,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen>
               Expanded(
                 child: SingleChildScrollView(
                   physics:
-                      const BouncingScrollPhysics(), // allow drag scrolling
+                      const AlwaysScrollableScrollPhysics(), // allow drag scrolling
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -137,12 +141,20 @@ class _HomeScreenState extends State<HomeScreen>
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 40, 20, 10),
                         child: SuggestionList(
-                          suggestions: products
-                              .map((e) => e.name)
-                              .toSet()
-                              .toList(),
-                          onSelected: (categoryId) {
-                            print("Selected: $categoryId");
+                          suggestions: [
+                            "All", // add "All" at the start
+                            ...productController.products
+                                .map((e) => e.categoryName)
+                                .toSet()
+                                .toList(),
+                          ],
+                          onSelected: (categoryName) {
+                            if (categoryName == "All") {
+                              ProductRepo.selectedCategory.value =
+                                  null; // show all products
+                            } else {
+                              ProductRepo.selectedCategory.value = categoryName;
+                            }
                           },
                         ),
                       ),
@@ -167,8 +179,8 @@ class _HomeScreenState extends State<HomeScreen>
                           builder: (_, __, ___) {
                             final filtered =
                                 ProductRepo.selectedCategory.value == null
-                                ? products
-                                : products
+                                ? productController.products
+                                : productController.products
                                       .where(
                                         (p) =>
                                             p.categoryName ==
@@ -203,22 +215,6 @@ class _HomeScreenState extends State<HomeScreen>
                           },
                         ),
                       ),
-
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(horizontal: 0),
-                      //   child: ProductGrid(
-                      //     products: products,
-                      //     onAdd: (product) {
-                      //       Navigator.push(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //           builder: (_) =>
-                      //               ProductDetailScreen(product: product),
-                      //         ),
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
