@@ -68,8 +68,6 @@ class MyApp extends StatelessWidget {
         '/register': (context) => const RegisterScreen(),
         '/home': (context) => const NavWiget(),
       },
-
-      home: NavWiget(),
     );
   }
 }
