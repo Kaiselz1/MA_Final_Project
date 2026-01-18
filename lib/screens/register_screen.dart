@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pos_lab/screens/login_screen.dart';
+import 'package:pos_lab/services/auth_service.dart';
 import 'package:pos_lab/style/color.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -12,7 +13,77 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
-  bool _darkenToTop = false;
+  bool _isLoading = false;
+
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleRegister() async {
+    // Validation
+    if (_usernameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
+      _showSnackBar('Please fill in all fields', isError: true);
+      return;
+    }
+
+    if (_passwordController.text != _confirmPasswordController.text) {
+      _showSnackBar('Passwords do not match', isError: true);
+      return;
+    }
+
+    if (_passwordController.text.length < 6) {
+      _showSnackBar('Password must be at least 6 characters', isError: true);
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    final result = await AuthService.register(
+      username: _usernameController.text.trim(),
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+    );
+
+    setState(() => _isLoading = false);
+
+    if (result['success']) {
+      _showSnackBar(result['message'] ?? 'Registration successful!');
+
+      // Navigate to login after short delay
+      await Future.delayed(const Duration(seconds: 2));
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    } else {
+      _showSnackBar(result['message'] ?? 'Registration failed', isError: true);
+    }
+  }
+
+  void _showSnackBar(String message, {bool isError = false}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.red : AppColor.col4,
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,19 +103,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
 
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
+          Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.black.withOpacity(_darkenToTop ? 0.3 : 0.4),
-                  Colors.black.withOpacity(_darkenToTop ? 0.6 : 0.7),
-                  Colors.black.withOpacity(_darkenToTop ? 0.9 : 1),
+                  Colors.black.withOpacity(0.3),
+                  Colors.black.withOpacity(0.6),
+                  Colors.black.withOpacity(0.9),
                 ],
-                stops: _darkenToTop ? [0.0, 0.3, 0.6] : [0.2, 0.5, 0.8],
+                stops: const [0.0, 0.3, 0.6],
               ),
             ),
           ),
@@ -159,6 +228,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 20),
 
                       TextFormField(
+                        controller: _usernameController,
                         decoration: InputDecoration(
                           labelText: 'Username',
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -187,6 +257,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 25),
 
                       TextFormField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           labelText: 'Email',
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -214,8 +286,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 25),
 
-                      // Password
                       TextFormField(
+                        controller: _passwordController,
                         obscureText: _obscurePassword,
                         decoration: InputDecoration(
                           labelText: 'Password',
@@ -258,6 +330,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 25),
 
                       TextFormField(
+                        controller: _confirmPasswordController,
                         obscureText: _obscureConfirmPassword,
                         decoration: InputDecoration(
                           labelText: 'Confirm Password',
@@ -301,9 +374,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 25),
 
                       ElevatedButton(
-                        onPressed: () {
-                          // TODO: handle register logic
-                        },
+                        onPressed: _isLoading ? null : _handleRegister,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColor.col4,
                           shape: RoundedRectangleBorder(
@@ -311,10 +382,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           minimumSize: const Size.fromHeight(50),
                         ),
-                        child: const Text(
-                          'Register',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
+                        child: _isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text(
+                                'Register',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
                       ),
                     ],
                   ),

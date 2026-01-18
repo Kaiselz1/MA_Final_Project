@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:pos_lab/screens/register_screen.dart";
+import "package:pos_lab/services/auth_service.dart";
 import "package:pos_lab/style/color.dart";
 import "package:pos_lab/widgets/nav_wiget.dart";
 
@@ -16,6 +17,60 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
   bool _rememberMe = false;
   bool _showForm = false;
+  bool _isLoading = false;
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleLogin() async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      _showSnackBar('Please enter email and password', isError: true);
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    final result = await AuthService.login(
+      _emailController.text.trim(),
+      _passwordController.text,
+    );
+
+    setState(() => _isLoading = false);
+
+    if (result['success']) {
+      if (!mounted) return;
+
+      // Show debug mode message if applicable
+      if (result['isDebugMode'] == true) {
+        _showSnackBar('Debug mode login successful!');
+      }
+
+      // Navigate to home
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const NavWiget()),
+      );
+    } else {
+      _showSnackBar(result['message'] ?? 'Login failed', isError: true);
+    }
+  }
+
+  void _showSnackBar(String message, {bool isError = false}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.red : AppColor.col4,
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,15 +155,12 @@ class _LoginScreenState extends State<LoginScreen> {
               opacity: _logoMoved ? 0.0 : 1.0,
               child: Text.rich(
                 TextSpan(
-                  children: [
+                  children: const [
                     TextSpan(
                       text: 'Evelyn Unmech\n',
                       style: TextStyle(fontSize: 30, letterSpacing: 2),
                     ),
-                    const TextSpan(
-                      text: 'Café',
-                      style: TextStyle(fontSize: 25),
-                    ),
+                    TextSpan(text: 'Café', style: TextStyle(fontSize: 25)),
                   ],
                 ),
                 textAlign: TextAlign.center,
@@ -221,6 +273,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 30),
                     TextFormField(
+                      controller: _emailController,
                       decoration: InputDecoration(
                         labelText: 'Email',
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -248,6 +301,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 30),
                     TextFormField(
+                      controller: _passwordController,
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         labelText: 'Password',
@@ -297,9 +351,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               value: _rememberMe,
                               checkColor: Colors.white,
                               activeColor: AppColor.col4,
-                              side: BorderSide(
-                                color: Colors
-                                    .white, // outline color when unchecked
+                              side: const BorderSide(
+                                color: Colors.white,
                                 width: 2,
                               ),
                               onChanged: (value) {
@@ -321,7 +374,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         GestureDetector(
                           onTap: () {},
-                          child: Text(
+                          child: const Text(
                             "Forgot password?",
                             style: TextStyle(
                               color: Colors.white,
@@ -337,58 +390,25 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
 
-          /// Back button
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 400),
-            top: _logoMoved ? 50 : -60, // move off-screen when not active
-            left: 20,
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: _logoMoved ? 1.0 : 0.0,
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _logoMoved = false;
-                    _darkenToTop = false;
-                  });
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.black38,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.white,
-                    size: 22,
-                  ),
-                ),
-              ),
-            ),
-          ),
-
           /// Sign In Button
           Positioned(
             bottom: 120,
             left: 20,
             right: 20,
             child: ElevatedButton(
-              onPressed: () {
-                if (!_showForm) {
-                  setState(() {
-                    _logoMoved = true;
-                    _darkenToTop = true;
-                    _showForm = true;
-                  });
-                } else {
-                  // SECOND CLICK → go to HomeScreen
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => const NavWiget()),
-                  );
-                }
-              },
+              onPressed: _isLoading
+                  ? null
+                  : () {
+                      if (!_showForm) {
+                        setState(() {
+                          _logoMoved = true;
+                          _darkenToTop = true;
+                          _showForm = true;
+                        });
+                      } else {
+                        _handleLogin();
+                      }
+                    },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColor.col4,
                 shape: RoundedRectangleBorder(
@@ -396,10 +416,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 minimumSize: const Size.fromHeight(50),
               ),
-              child: const Text(
-                'Sign In',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
+              child: _isLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : const Text(
+                      'Sign In',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
             ),
           ),
 

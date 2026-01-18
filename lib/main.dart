@@ -2,23 +2,32 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:get/get.dart';
+import 'package:pos_lab/screens/splash_screen.dart';
+import 'package:pos_lab/screens/login_screen.dart';
+import 'package:pos_lab/screens/register_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/nav_wiget.dart';
 import 'dart:async';
 
 void main() {
-    FlutterError.onError = (FlutterErrorDetails details) {
+  FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
   };
 
-  runZonedGuarded(() {
-    runApp(const MyApp());
-  }, (error, stack) {
-    debugPrint("ZONED ERROR: $error");
-    debugPrintStack(stackTrace: stack);
-  });
-  
-  
+  runZonedGuarded(
+    () {
+      runApp(
+        DevicePreview(
+          enabled: !kReleaseMode, // Only enable in debug/profile mode
+          builder: (context) => const MyApp(),
+        ),
+      );
+    },
+    (error, stack) {
+      debugPrint("ZONED ERROR: $error");
+      debugPrintStack(stackTrace: stack);
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -29,10 +38,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Evelyn Unmech Cafè',
-
       useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
-
       theme: ThemeData(
         fontFamily: 'Tripsans',
         primaryColor: AppColor.col4,
@@ -51,8 +59,13 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-
-      home: NavWiget(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/home': (context) => const NavWiget(),
+      },
     );
   }
 }
