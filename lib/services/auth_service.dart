@@ -94,11 +94,7 @@ class AuthService {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         await saveToken(data['access_token']);
-        return {
-          'success': true,
-          'message': 'Login successful',
-          'isDebugMode': false,
-        };
+        return {'success': true, 'message': 'Success', 'isDebugMode': false};
       } else {
         final error = json.decode(response.body);
         return {'success': false, 'message': error['detail'] ?? 'Login failed'};
@@ -113,6 +109,8 @@ class AuthService {
   }
 
   // Register
+  // Register and automatically save token
+  // Register and then automatically trigger Login
   static Future<Map<String, dynamic>> register({
     required String username,
     required String email,
@@ -132,10 +130,9 @@ class AuthService {
           .timeout(const Duration(seconds: 10));
 
       if (response.statusCode == 201) {
-        return {
-          'success': true,
-          'message': 'Registration successful! Please login.',
-        };
+        // Registration successful! Now trigger login automatically
+        // We use the email and password the user just provided
+        return await login(email, password);
       } else {
         final error = json.decode(response.body);
         return {
