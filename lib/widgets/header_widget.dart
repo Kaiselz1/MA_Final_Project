@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pos_lab/style/color.dart';
+import 'package:get/get.dart';
+import 'package:pos_lab/controllers/setting_controller.dart';
+
 
 class AppHeader extends StatelessWidget {
   final String name;
@@ -22,15 +25,20 @@ class AppHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final SettingController settings = Get.find<SettingController>();
+
     return SizedBox(
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          Container(
+
+          Obx(() => Container(
             padding: const EdgeInsets.fromLTRB(20, 50, 20, 40),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [AppColor.col6, AppColor.col5],
+                colors: settings.isDark 
+                    ? [AppColor.col5, AppColor.col6]
+                    : [AppColor.col6, AppColor.col5],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -84,29 +92,30 @@ class AppHeader extends StatelessWidget {
                 ),
               ],
             ),
-          ),
+          )),
         ],
       ),
     );
   }
 }
+
 class AppTitleHeader extends StatelessWidget {
   final String title;
   final VoidCallback? onBackTap;
 
-  const AppTitleHeader({
-    super.key,
-    required this.title,
-    this.onBackTap,
-  });
+  const AppTitleHeader({super.key, required this.title, this.onBackTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 120, 
+    final SettingController settings = Get.find<SettingController>();
+
+    return Obx(() => Container(
+      height: 120,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppColor.col6, AppColor.col5],
+          colors: settings.isDark 
+              ? [AppColor.col8, AppColor.col7] 
+              : [AppColor.col6, AppColor.col5],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -142,8 +151,6 @@ class AppTitleHeader extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }
-
-

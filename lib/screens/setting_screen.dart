@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pos_lab/controllers/setting_controller.dart';
 import 'package:pos_lab/screens/login_screen.dart';
 import 'package:pos_lab/style/color.dart';
+import 'package:pos_lab/enum/language.dart';
+import 'package:pos_lab/enum/theme_mode.dart';
 
-class SettingScreen extends StatefulWidget {
+class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
 
   @override
-  State<SettingScreen> createState() => _SettingScreenState();
-}
-
-class _SettingScreenState extends State<SettingScreen> {
-  bool isDarkMode = true;
-  String selectedLanguage = "English";
-
-  @override
   Widget build(BuildContext context) {
+    final SettingController controller = Get.put(SettingController());
+
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    Color primaryBrandColor = isDark ? AppColor.col4 : AppColor.col5;
+    Color adaptiveTextColor = isDark ? AppColor.col8 : AppColor.col6;
+
     return Scaffold(
-      backgroundColor: AppColor.col8,
+      backgroundColor: context.theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // --- Header Row (Profile & Close) ---
+              // --- Header Row ---
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -34,7 +36,9 @@ class _SettingScreenState extends State<SettingScreen> {
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(12),
                       image: const DecorationImage(
-                        image: AssetImage('assets/images/profiles/johnnoon.png'),
+                        image: AssetImage(
+                          'assets/images/profiles/johnnoon.png',
+                        ),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -50,13 +54,13 @@ class _SettingScreenState extends State<SettingScreen> {
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: AppColor.col5,
+                            color: primaryBrandColor, // DYNAMIC COLOR
                           ),
                         ),
                         Text(
                           "johnnoon77@gmail.com",
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: adaptiveTextColor.withOpacity(0.6),
                             fontSize: 14,
                           ),
                         ),
@@ -65,122 +69,131 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.close, size: 40, color: AppColor.col5),
+                    icon: Icon(
+                      Icons.close,
+                      size: 40,
+                      color: primaryBrandColor,
+                    ), // DYNAMIC COLOR
                   ),
                 ],
               ),
 
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
 
-              SizedBox(
-                width: 120,
-                height: 30,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
-                      (route) => false,
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.col5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+              // Edit Profile Button
+              _buildButton("edit_profile".tr, primaryBrandColor, () {
+                Get.offAll(() => const LoginScreen());
+              }),
+
+              const Divider(height: 30),
+
+              // --- Theme Section ---
+              Text(
+                "Theme".tr,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: primaryBrandColor,
+                  fontSize: 18,
+                ),
+              ),
+              const SizedBox(height: 5),
+              Obx(
+                () => Column(
+                  children: [
+                    _buildToggleOption(
+                      label: "lightMode".tr,
+                      primaryColor: primaryBrandColor,
+                      adaptiveTextColor: adaptiveTextColor,
+                      isActive: controller.themeMode.value == TThemeMode.light,
+                      onChanged: (val) =>
+                          controller.toggleTheme(TThemeMode.light),
                     ),
-                    elevation: 2,
-                  ),
-                  child: const Text(
-                    "Edit Profile",
-                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
+                    _buildToggleOption(
+                      label: "darkMode".tr,
+                      primaryColor: primaryBrandColor,
+                      adaptiveTextColor: adaptiveTextColor,
+                      isActive: controller.themeMode.value == TThemeMode.dark,
+                      onChanged: (val) =>
+                          controller.toggleTheme(TThemeMode.dark),
+                    ),
+                  ],
                 ),
               ),
-              const Divider(height: 40),
 
-              Text(
-                "Theme",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppColor.col5,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 5),
-              _buildToggleOption(
-                label: "Light",
-                isActive: !isDarkMode,
-                onChanged: (val) {
-                  if (val) setState(() => isDarkMode = false);
-                },
-              ),
-              _buildToggleOption(
-                label: "Dark",
-                isActive: isDarkMode,
-                onChanged: (val) {
-                  if (val) setState(() => isDarkMode = true);
-                },
-              ),
               const Divider(height: 20),
 
               Text(
-                "Language",
+                "language".tr,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: AppColor.col5,
-                  fontSize: 16,
+                  color: primaryBrandColor,
+                  fontSize: 18,
                 ),
               ),
               const SizedBox(height: 5),
-              _buildToggleOption(
-                label: "English",
-                isActive: selectedLanguage == "English",
-                onChanged: (val) {
-                  if (val) setState(() => selectedLanguage = "English");
-                },
+              Obx(
+                () => Column(
+                  children: [
+                    _buildToggleOption(
+                      label: "english".tr,
+                      primaryColor: primaryBrandColor,
+                      adaptiveTextColor: adaptiveTextColor,
+                      isActive: controller.language.value == Language.en,
+                      onChanged: (val) => controller.toggleLanguage(
+                        Language.en,
+                      ), // Changed to toggle
+                    ),
+                    _buildToggleOption(
+                      label: "khmer".tr,
+                      primaryColor: primaryBrandColor,
+                      adaptiveTextColor: adaptiveTextColor,
+                      isActive: controller.language.value == Language.kh,
+                      onChanged: (val) => controller.toggleLanguage(
+                        Language.kh,
+                      ), // Changed to toggle
+                    ),
+                  ],
+                ),
               ),
-              _buildToggleOption(
-                label: "Khmer",
-                isActive: selectedLanguage == "Khmer",
-                onChanged: (val) {
-                  if (val) setState(() => selectedLanguage = "Khmer");
-                },
-              ),
+
               const Divider(height: 20),
 
-              // --- Contact Info Section ---
-              _buildContactItem(Icons.telegram, "095 445 770"),
-              _buildContactItem(Icons.phone, "095 445 770"),
-              _buildContactItem(Icons.email, "basswalker76@gmail.com"),
-              _buildContactItem(Icons.facebook, "Sokphonai Ny"),
+              _buildContactItem(
+                Icons.telegram,
+                "095 445 770",
+                primaryBrandColor,
+                adaptiveTextColor,
+              ),
+              _buildContactItem(
+                Icons.phone,
+                "095 445 770",
+                primaryBrandColor,
+                adaptiveTextColor,
+              ),
+              _buildContactItem(
+                Icons.email,
+                "basswalker76@gmail.com",
+                primaryBrandColor,
+                adaptiveTextColor,
+              ),
+              _buildContactItem(
+                Icons.facebook,
+                "Sokphonai Ny",
+                primaryBrandColor,
+                adaptiveTextColor,
+              ),
 
               const SizedBox(height: 20),
 
-              // --- Sign Out Button ---
               Center(
-                child: SizedBox(
+                child: _buildButton(
+                  "Sign Out".tr,
+                  primaryBrandColor,
+                  () {
+                    Get.offAll(() => const LoginScreen());
+                  },
                   width: 200,
                   height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => const LoginScreen()),
-                        (route) => false,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.col5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      elevation: 2,
-                    ),
-                    child: const Text(
-                      "Sign Out",
-                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -191,10 +204,39 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
-  // --- REUSABLE COMPONENTS ---
+  Widget _buildButton(
+    String label,
+    Color color,
+    VoidCallback onPressed, {
+    double width = 120,
+    double height = 30,
+  }) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        child: Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildToggleOption({
     required String label,
+    required Color primaryColor,
+    required Color adaptiveTextColor,
     required bool isActive,
     required Function(bool) onChanged,
   }) {
@@ -205,42 +247,60 @@ class _SettingScreenState extends State<SettingScreen> {
           Text(
             label,
             style: TextStyle(
-              color: isActive ? Colors.black : Colors.grey,
+              color: isActive
+                  ? primaryColor
+                  : adaptiveTextColor.withOpacity(0.5),
               fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-              fontSize: 16,
+              fontSize: 14,
             ),
           ),
           const Spacer(),
           Switch(
             value: isActive,
             onChanged: onChanged,
-            activeColor: AppColor.col5,
+            // 1. Force the thumb to be a solid color in both states
+            thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+              if (states.contains(WidgetState.selected)) return Colors.white;
+              return adaptiveTextColor.withOpacity(0.6);
+            }),
+            // 2. Force the track background color
+            trackColor: WidgetStateProperty.resolveWith<Color>((states) {
+              if (states.contains(WidgetState.selected)) return primaryColor;
+              return adaptiveTextColor.withOpacity(0.1);
+            }),
+            // 3. REMOVE THE OUTLINE (This is what makes it look different on restart)
+            trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+            // 4. PREVENT SIZE JUMPING (Removes the internal M3 icon)
+            thumbIcon: WidgetStateProperty.all(
+              const Icon(Icons.circle, color: Colors.transparent),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildContactItem(IconData icon, String text) {
+  Widget _buildContactItem(
+    IconData icon,
+    String text,
+    Color primaryColor,
+    Color textColor,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: [
           CircleAvatar(
             radius: 18,
-            backgroundColor: AppColor.col5.withOpacity(0.1),
-            child: Icon(
-              icon,
-              size: 25,
-              color: AppColor.col5,
-            ),
+            backgroundColor: primaryColor.withOpacity(0.1),
+            child: Icon(icon, size: 25, color: primaryColor),
           ),
           const SizedBox(width: 18),
           Expanded(
             child: Text(
               text,
               style: TextStyle(
-                color: Colors.grey[700],
+                color: textColor.withOpacity(0.8),
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),

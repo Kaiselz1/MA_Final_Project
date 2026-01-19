@@ -1,0 +1,1 @@
+enum TThemeMode { light, dark }

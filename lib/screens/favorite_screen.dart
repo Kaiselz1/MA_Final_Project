@@ -36,7 +36,6 @@ class _FavoriteScreen extends State<FavoriteScreen>
         children: [
           Column(
             children: [
-              // ================= HEADER =================
               AppHeader(
                 name: 'John Noon',
                 email: 'johnnoon77@gmail.com',

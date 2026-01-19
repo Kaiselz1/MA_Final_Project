@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:pos_lab/style/color.dart';
 
 class SizeSelector extends StatelessWidget {
   final String selectedSize;
   final Function(String) onSelect;
+  final bool isDark;
 
-  const SizeSelector({super.key, required this.selectedSize, required this.onSelect});
+  const SizeSelector({
+    super.key,
+    required this.selectedSize,
+    required this.onSelect,
+    required this.isDark,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +27,27 @@ class SizeSelector extends StatelessWidget {
             return GestureDetector(
               onTap: () => onSelect(size),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                decoration: BoxDecoration(
-                  color: isActive ? const Color(0xFF6D5D51) : Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: isActive ? Colors.transparent : Colors.grey.shade300),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 8,
                 ),
-                child: Text(size, style: TextStyle(color: isActive ? Colors.white : Colors.black54)),
+                decoration: BoxDecoration(
+                  color: isActive
+                      ? AppColor.col5
+                      : (isDark ? Colors.white10 : Colors.white),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isActive
+                        ? Colors.transparent
+                        : (isDark ? Colors.white24 : Colors.grey.shade300),
+                  ),
+                ),
+                child: Text(
+                  size,
+                  style: TextStyle(
+                    color: isActive ? Colors.white : Colors.grey,
+                  ),
+                ),
               ),
             );
           }).toList(),

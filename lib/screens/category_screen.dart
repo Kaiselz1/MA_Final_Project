@@ -65,7 +65,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                             const begin = Offset(-1.0, 0.0);
                             const end = Offset.zero;
                             const curve = Curves
-                                .easeOutCubic; // Smooth decelerating curve
+                                .easeOutCubic;
 
                             var tween = Tween(
                               begin: begin,
@@ -90,6 +90,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        Navigator.pop(context);
                         Get.find<MainController>().currentIndex.value = 0;
                       },
                       child: Icon(
@@ -125,7 +126,6 @@ class _CategoryScreen extends State<CategoryScreen> {
                 ),
               ),
 
-              // ================= Body =================
               Expanded(
                 child: GridView.builder(
                   padding: const EdgeInsets.all(20),
@@ -140,9 +140,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                     return CategoryCard(
                       title: categoryData[index]['name']!,
                       iconPath: categoryData[index]['icon']!,
-                      onTap: () {
-                        // Navigate to a filtered product list based on categoryData[index]['name']
-                      },
+                      onTap: () {},
                     );
                   },
                 ),

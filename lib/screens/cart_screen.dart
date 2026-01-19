@@ -1,5 +1,7 @@
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "package:get/get.dart";
+import "package:pos_lab/controllers/setting_controller.dart";
 import "package:pos_lab/models/cart_items.dart";
 import "package:pos_lab/repositories/product_repo.dart";
 import "package:pos_lab/screens/checkout_screen.dart";
@@ -14,16 +16,16 @@ class CartScreen extends StatefulWidget {
   State<CartScreen> createState() => _CartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> with AutomaticKeepAliveClientMixin{
+class _CartScreenState extends State<CartScreen>
+    with AutomaticKeepAliveClientMixin {
   bool isLoading = true;
 
   List<CartItem> get items => ProductRepo.cartItems;
-
   double get subTotal =>
       items.fold(0, (sum, cartItem) => sum + cartItem.totalPrice);
-
   double get deliveryCharge => items.isEmpty ? 0 : 2;
   double get grandTotal => subTotal + deliveryCharge;
+  final SettingController settings = Get.find<SettingController>();
 
   @override
   void initState() {
@@ -35,145 +37,132 @@ class _CartScreenState extends State<CartScreen> with AutomaticKeepAliveClientMi
         ProductRepo.addProductToCart(ProductRepo.products[1]);
       }
     }
-    isLoading = false; // remove this when use real API
+    isLoading = false;
   }
 
   Future<void> increaseQty(CartItem item) async {
     setState(() => item.qty += 1);
-
-    // TODO: call API
-    // await api.updateCartItemQty(item.id, item.qty);
   }
 
   Future<void> decreaseQty(CartItem item) async {
     if (item.qty <= 0) return;
     setState(() => ProductRepo.removeFromCart(item));
-
-    // TODO: call API
-    // await api.updateCartItemQty(item.id, item.qty);
   }
 
   Future<void> deleteItem(CartItem item) async {
     setState(() => ProductRepo.deleteProductFromCart(item.id));
-
-    // TODO: call API
-    // await api.deleteCartItem(item.id);
   }
-
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      backgroundColor: AppColor.col8,
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              AppHeader(
-                name: 'John Noon',
-                email: 'johnnoon77@gmail.com',
-                onMenuTap: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: const Duration(milliseconds: 200),
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const SettingScreen(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                            const begin = Offset(-1.0, 0.0);
-                            const end = Offset.zero;
-                            const curve = Curves.easeOutCubic;
 
-                            var tween = Tween(
-                              begin: begin,
-                              end: end,
-                            ).chain(CurveTween(curve: curve));
-                            var offsetAnimation = animation.drive(tween);
+    return Obx(() {
+      final bool isDark = settings.isDark;
 
-                            return SlideTransition(
-                              position: offsetAnimation,
-                              child: child,
-                            );
-                          },
-                    ),
-                  );
-                },
-                showSearchBar: false,
-              ),
-
-              const SizedBox(height: 40),
-              Expanded(
-                child: isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : SingleChildScrollView(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-                        child: Column(
-                          children: [
-                            // Cart items (REAL DATA)
-                            ...items.map(
-                              (item) => Padding(
-                                padding: const EdgeInsets.only(bottom: 8),
-                                child: CartItemTile(
-                                  item: item,
-                                  onIncrease: () => increaseQty(item),
-                                  onDecrease: () => decreaseQty(item),
-                                  onDelete: () => deleteItem(item),
+      return Scaffold(
+        backgroundColor: isDark ? AppColor.col7 : AppColor.col8,
+        body: Column(
+          children: [
+            AppHeader(
+              name: 'John Noon',
+              email: 'johnnoon77@gmail.com',
+              onMenuTap: () {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    transitionDuration: const Duration(milliseconds: 200),
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const SettingScreen(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                          var tween = Tween(
+                            begin: const Offset(-1.0, 0.0),
+                            end: Offset.zero,
+                          ).chain(CurveTween(curve: Curves.easeOutCubic));
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                  ),
+                );
+              },
+              showSearchBar: false,
+            ),
+            const SizedBox(height: 40),
+            Expanded(
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : SingleChildScrollView(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                      child: Column(
+                        children: [
+                          ...items.map(
+                            (item) => Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: CartItemTile(
+                                item: item,
+                                isDark: isDark,
+                                onIncrease: () => increaseQty(item),
+                                onDecrease: () => decreaseQty(item),
+                                onDelete: () => deleteItem(item),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            height: 46,
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: items.isEmpty
+                                  ? null
+                                  : () => Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const CheckoutScreen(),
+                                      ),
+                                    ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColor.col4,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                              ),
+                              child: const Text(
+                                "Proceed to Checkout",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              height: 46,
-                              child: ElevatedButton(
-                                onPressed: items.isEmpty
-                                    ? null
-                                    : () {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (_) =>
-                                                const CheckoutScreen(),
-                                          ),
-                                        );
-                                      },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColor.col4,
-                                  elevation: 1,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "Proceed to Checkout",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+                    ),
+            ),
+          ],
+        ),
+      );
+    });
   }
-  
+
   @override
   bool get wantKeepAlive => true;
 }
 
 class _QtyButton extends StatelessWidget {
-  const _QtyButton({required this.icon, required this.onTap});
+  const _QtyButton({
+    required this.icon,
+    required this.onTap,
+    required this.isDark,
+  });
 
   final IconData icon;
   final VoidCallback onTap;
+  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
@@ -181,13 +170,17 @@ class _QtyButton extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
       child: Container(
-        width: 22,
-        height: 22,
+        width: 25,
+        height: 25,
         decoration: BoxDecoration(
-          border: Border.all(color: const Color(0xFFB8AAA0)),
+          border: Border.all(color: isDark ? AppColor.col4 : AppColor.col6),
           borderRadius: BorderRadius.circular(6),
         ),
-        child: Icon(icon, size: 14),
+        child: Icon(
+          icon,
+          size: 20,
+          color: isDark ? AppColor.col4 : AppColor.col6,
+        ),
       ),
     );
   }
@@ -195,6 +188,7 @@ class _QtyButton extends StatelessWidget {
 
 class CartItemTile extends StatelessWidget {
   final CartItem item;
+  final bool isDark;
   final VoidCallback onIncrease;
   final VoidCallback onDecrease;
   final VoidCallback onDelete;
@@ -202,6 +196,7 @@ class CartItemTile extends StatelessWidget {
   const CartItemTile({
     super.key,
     required this.item,
+    required this.isDark,
     required this.onIncrease,
     required this.onDecrease,
     required this.onDelete,
@@ -219,27 +214,34 @@ class CartItemTile extends StatelessWidget {
           color: Colors.red.shade400,
           borderRadius: BorderRadius.circular(16),
         ),
-        child: const Icon(Icons.delete, color: Colors.white),
+        child: Icon(Icons.delete, color: AppColor.col4),
       ),
       onDismissed: (_) => onDelete(),
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          border: Border.all(
+            color: isDark ? AppColor.col5 : Colors.white,
+            width: 1.0,
+          ),
+          color: isDark ? AppColor.col6 : Colors.white,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
               blurRadius: 10,
-              color: Colors.black12,
-              offset: Offset(0, 6),
+              spreadRadius: 2,
+              color: isDark
+                  ? Colors.black.withOpacity(0.5)
+                  : Colors.black.withOpacity(0.05),
+              offset: const Offset(0, 5),
             ),
           ],
         ),
         child: Row(
           children: [
             Container(
-              width: 56,
-              height: 56,
+              width: 65,
+              height: 65,
               decoration: BoxDecoration(
                 color: const Color(0xFFEAE2DA),
                 borderRadius: BorderRadius.circular(12),
@@ -270,9 +272,9 @@ class CartItemTile extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     '\$${item.product.price.toStringAsFixed(2)}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
-                      color: Colors.brown,
+                      color: AppColor.col4,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -281,18 +283,19 @@ class CartItemTile extends StatelessWidget {
             ),
             Row(
               children: [
-                _QtyButton(icon: Icons.remove, onTap: onDecrease),
+                _QtyButton(
+                  icon: Icons.remove,
+                  onTap: onDecrease,
+                  isDark: isDark,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
                     '${item.qty}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ),
-                _QtyButton(icon: Icons.add, onTap: onIncrease),
+                _QtyButton(icon: Icons.add, onTap: onIncrease, isDark: isDark),
               ],
             ),
           ],

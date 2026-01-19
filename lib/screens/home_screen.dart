@@ -7,7 +7,6 @@ import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/screens/category_screen.dart';
 import 'package:pos_lab/screens/product_detail_screen.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
-import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
 import 'package:pos_lab/widgets/product_grid_widget.dart';
 import 'package:pos_lab/widgets/search_widget.dart';
@@ -24,8 +23,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
   Set<int> favoriteIds = {};
-      final CounterController counterController = Get.put(CounterController());
-
+  final CounterController counterController = Get.put(CounterController());
 
   void addToFavorite(Product product) async {
     setState(() {
@@ -48,15 +46,15 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final theme = context.theme;
 
     return Scaffold(
-      backgroundColor: AppColor.col8,
+      backgroundColor: theme.scaffoldBackgroundColor,
 
       body: Stack(
         children: [
           Column(
             children: [
-              // ================= HEADER =================
               AppHeader(
                 name: 'John Noon',
                 email: 'johnnoon77@gmail.com',
@@ -64,15 +62,15 @@ class _HomeScreenState extends State<HomeScreen>
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      transitionDuration: const Duration(milliseconds: 200),
+                      transitionDuration: Duration(milliseconds: 200),
                       pageBuilder: (context, animation, secondaryAnimation) =>
-                          const SettingScreen(),
+                          SettingScreen(),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
                             const begin = Offset(-1.0, 0.0);
                             const end = Offset.zero;
                             const curve = Curves
-                                .easeOutCubic; // Smooth decelerating curve
+                                .easeOutCubic;
 
                             var tween = Tween(
                               begin: begin,
@@ -103,12 +101,11 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
 
-              // ================= Body =================
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      const ImageSlider(
+                      ImageSlider(
                         images: [
                           'assets/images/sliders/main_slide.png',
                           'assets/images/sliders/slide2.png',
@@ -118,7 +115,6 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
 
                       SizedBox(height: 10),
-                      // Suggestions
                       ProductGrid(
                         products: ProductRepo.products,
                         onAdd: (product) {
@@ -143,10 +139,10 @@ class _HomeScreenState extends State<HomeScreen>
               print("Searching: $value");
             },
             onCategoryTap: () {
-              Navigator.of(context, rootNavigator: false).push(
-                MaterialPageRoute(builder: (_) => const CategoryScreen()),
-              );
-
+              Navigator.of(
+                context,
+                rootNavigator: false,
+              ).push(MaterialPageRoute(builder: (_) => const CategoryScreen()));
             },
           ),
         ],

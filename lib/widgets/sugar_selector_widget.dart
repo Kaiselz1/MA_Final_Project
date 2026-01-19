@@ -8,7 +8,14 @@ class SugarSelector extends StatelessWidget {
   final double percentage;
   final String selectedSweetness;
   final bool showSlider;
-  final Function(SugarMode, {double? percent, String? sweetness, bool? toggleSlider}) onChanged;
+  final bool isDark;
+  final Function(
+    SugarMode, {
+    double? percent,
+    String? sweetness,
+    bool? toggleSlider,
+  })
+  onChanged;
 
   const SugarSelector({
     super.key,
@@ -16,13 +23,19 @@ class SugarSelector extends StatelessWidget {
     required this.percentage,
     required this.selectedSweetness,
     required this.showSlider,
+    required this.isDark,
     required this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     final List<String> sweetnessOptions = [
-      "Less Sweet", "Normal+", "Standard", "Sweet", "Extra Sweet", "Double Sugar"
+      "Less Sweet",
+      "Normal+",
+      "Standard",
+      "Sweet",
+      "Extra Sweet",
+      "Double Sugar",
     ];
 
     return Column(
@@ -33,19 +46,27 @@ class SugarSelector extends StatelessWidget {
           children: [
             _buildBtn("No Sugar", SugarMode.none),
             const SizedBox(width: 10),
-            _buildBtn("${percentage.toInt()}%", SugarMode.percentage, isPercent: true),
+            _buildBtn(
+              "${percentage.toInt()}%",
+              SugarMode.percentage,
+              isPercent: true,
+            ),
             const SizedBox(width: 10),
             _buildSweetnessDropdown(context, sweetnessOptions),
           ],
         ),
-        
+
         // Dynamic Slider Section
         if (activeMode == SugarMode.percentage && showSlider) ...[
           const SizedBox(height: 10),
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              activeTrackColor: const Color(0xFF6D5D51),
-              thumbColor: const Color(0xFF6D5D51),
+              activeTrackColor: AppColor.col4,
+              thumbColor: AppColor.col4,
+              inactiveTrackColor: isDark
+                  ? Colors.white.withOpacity(0.2)
+                  : Colors.black.withOpacity(0.1),
+              trackHeight: 4.0,
             ),
             child: Slider(
               value: percentage,
@@ -55,7 +76,11 @@ class SugarSelector extends StatelessWidget {
                 if (val == 0) {
                   onChanged(SugarMode.none, percent: 0, toggleSlider: false);
                 } else {
-                  onChanged(SugarMode.percentage, percent: val, toggleSlider: true);
+                  onChanged(
+                    SugarMode.percentage,
+                    percent: val,
+                    toggleSlider: true,
+                  );
                 }
               },
             ),
@@ -68,15 +93,25 @@ class SugarSelector extends StatelessWidget {
   Widget _buildBtn(String label, SugarMode mode, {bool isPercent = false}) {
     bool isActive = activeMode == mode;
     return GestureDetector(
-      onTap: () => onChanged(mode, toggleSlider: isPercent ? !showSlider : false),
+      onTap: () =>
+          onChanged(mode, toggleSlider: isPercent ? !showSlider : false),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? AppColor.col5 : Colors.white,
+          color: isActive
+              ? AppColor.col5
+              : (isDark ? Colors.white10 : Colors.white),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: isActive ? Colors.transparent : Colors.grey.shade300),
+          border: Border.all(
+            color: isActive
+                ? Colors.transparent
+                : (isDark ? Colors.white24 : Colors.grey.shade300),
+          ),
         ),
-        child: Text(label, style: TextStyle(color: isActive ? Colors.white : Colors.grey)),
+        child: Text(
+          label,
+          style: TextStyle(color: isActive ? Colors.white : Colors.grey),
+        ),
       ),
     );
   }
@@ -84,20 +119,34 @@ class SugarSelector extends StatelessWidget {
   Widget _buildSweetnessDropdown(BuildContext context, List<String> options) {
     bool isActive = activeMode == SugarMode.sweetness;
     return PopupMenuButton<String>(
-      onSelected: (val) => onChanged(SugarMode.sweetness, sweetness: val, toggleSlider: false),
-      itemBuilder: (context) => options.map((opt) => PopupMenuItem(value: opt, child: Text(opt))).toList(),
+      onSelected: (val) =>
+          onChanged(SugarMode.sweetness, sweetness: val, toggleSlider: false),
+      itemBuilder: (context) => options
+          .map((opt) => PopupMenuItem(value: opt, child: Text(opt)))
+          .toList(),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? const Color(0xFF6D5D51) : Colors.white,
+          color: isActive
+              ? AppColor.col5
+              : (isDark ? Colors.white10 : Colors.white),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: isActive ? Colors.transparent : Colors.grey.shade300),
+          border: Border.all(
+            color: isActive
+                ? Colors.transparent
+                : (isDark ? Colors.white24 : Colors.grey.shade300),
+          ),
         ),
         child: Row(
           children: [
-            Text(isActive ? selectedSweetness : "Sweetness", 
-                 style: TextStyle(color: isActive ? Colors.white : Colors.grey)),
-            Icon(Icons.arrow_drop_down, color: isActive ? Colors.white : Colors.grey),
+            Text(
+              isActive ? selectedSweetness : "Sweetness",
+              style: TextStyle(color: isActive ? Colors.white : Colors.grey),
+            ),
+            Icon(
+              Icons.arrow_drop_down,
+              color: isActive ? Colors.white : Colors.grey,
+            ),
           ],
         ),
       ),
