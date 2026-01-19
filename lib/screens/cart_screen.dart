@@ -2,6 +2,8 @@ import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "package:pos_lab/controllers/setting_controller.dart";
+import "package:pos_lab/controllers/cart_controller.dart";
+
 import "package:pos_lab/models/cart_items.dart";
 import "package:pos_lab/repositories/product_repo.dart";
 import "package:pos_lab/screens/checkout_screen.dart";
@@ -30,11 +32,34 @@ class _CartScreenState extends State<CartScreen>
   @override
   void initState() {
     super.initState();
-    // loadCartFromApi();
-    if (ProductRepo.cartItems.isEmpty && ProductRepo.products.isNotEmpty) {
-      ProductRepo.addProductToCart(ProductRepo.products[0]);
-      if (ProductRepo.products.length > 1) {
-        ProductRepo.addProductToCart(ProductRepo.products[1]);
+    controller = CartController();
+    controller.init();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_listenerAttached) return;
+    _listenerAttached = true;
+
+    controller.addListener(() {
+      switch (controller.status) {
+        case UIStatus.loading:
+          showLoading(context);
+          controller.resetStatus();
+          break;
+
+        case UIStatus.error:
+          Navigator.pop(context); // close loading
+          showError(context, controller.errorMessage ?? "Unknown error");
+          controller.resetStatus();
+
+          break;
+
+        case UIStatus.success:
+        case UIStatus.idle:
+          break;
       }
     }
     isLoading = false;

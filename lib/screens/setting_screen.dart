@@ -122,39 +122,39 @@ class SettingScreen extends StatelessWidget {
 
               const Divider(height: 20),
 
-              Text(
-                "language".tr,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: primaryBrandColor,
-                  fontSize: 18,
-                ),
-              ),
-              const SizedBox(height: 5),
-              Obx(
-                () => Column(
-                  children: [
-                    _buildToggleOption(
-                      label: "english".tr,
-                      primaryColor: primaryBrandColor,
-                      adaptiveTextColor: adaptiveTextColor,
-                      isActive: controller.language.value == Language.en,
-                      onChanged: (val) => controller.toggleLanguage(
-                        Language.en,
-                      ), // Changed to toggle
-                    ),
-                    _buildToggleOption(
-                      label: "khmer".tr,
-                      primaryColor: primaryBrandColor,
-                      adaptiveTextColor: adaptiveTextColor,
-                      isActive: controller.language.value == Language.kh,
-                      onChanged: (val) => controller.toggleLanguage(
-                        Language.kh,
-                      ), // Changed to toggle
-                    ),
-                  ],
-                ),
-              ),
+              // Text(
+              //   "language".tr,
+              //   style: TextStyle(
+              //     fontWeight: FontWeight.bold,
+              //     color: primaryBrandColor,
+              //     fontSize: 18,
+              //   ),
+              // ),
+              // const SizedBox(height: 5),
+              // Obx(
+              //   () => Column(
+              //     children: [
+              //       _buildToggleOption(
+              //         label: "english".tr,
+              //         primaryColor: primaryBrandColor,
+              //         adaptiveTextColor: adaptiveTextColor,
+              //         isActive: controller.language.value == Language.en,
+              //         onChanged: (val) => controller.toggleLanguage(
+              //           Language.en,
+              //         ), // Changed to toggle
+              //       ),
+              //       _buildToggleOption(
+              //         label: "khmer".tr,
+              //         primaryColor: primaryBrandColor,
+              //         adaptiveTextColor: adaptiveTextColor,
+              //         isActive: controller.language.value == Language.kh,
+              //         onChanged: (val) => controller.toggleLanguage(
+              //           Language.kh,
+              //         ), // Changed to toggle
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
               const Divider(height: 20),
 

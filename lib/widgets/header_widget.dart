@@ -5,8 +5,8 @@ import 'package:pos_lab/controllers/setting_controller.dart';
 
 
 class AppHeader extends StatelessWidget {
-  final String name;
-  final String email;
+  final Widget name;
+  final Widget email;
   final VoidCallback? onMenuTap;
   final Function(String)? onSearchChanged;
   final VoidCallback? onCategoryTap;
@@ -55,21 +55,21 @@ class AppHeader extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      name,
+                    DefaultTextStyle(
                       style: TextStyle(
                         color: AppColor.col4,
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                       ),
+                      child: name,
                     ),
                     const SizedBox(height: 2),
-                    Text(
-                      email,
+                    DefaultTextStyle(
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 12,
                       ),
+                      child: email,
                     ),
                   ],
                 ),

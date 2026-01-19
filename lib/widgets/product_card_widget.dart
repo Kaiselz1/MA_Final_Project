@@ -4,16 +4,13 @@ import 'package:get/get.dart'; // Add Get
 import 'package:pos_lab/controllers/setting_controller.dart'; // Import your controller
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/style/color.dart';
+import 'package:pos_lab/controllers/favorite_controller.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onAdd;
 
-  const ProductCard({
-    super.key,
-    required this.product,
-    required this.onAdd,
-  });
+  const ProductCard({super.key, required this.product, required this.onAdd});
 
   @override
   Widget build(BuildContext context) {

@@ -23,35 +23,32 @@ class _ProfileScreen extends State<ProfileScreen> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.chevron_left, color: AppColor.col4),
-          onPressed: () => 
-          Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: const Duration(milliseconds: 200),
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const HomeScreen(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                            const begin = Offset(-1.0, 0.0);
-                            const end = Offset.zero;
-                            const curve = Curves
-                                .easeOutCubic; // Smooth decelerating curve
+          onPressed: () => Navigator.push(
+            context,
+            PageRouteBuilder(
+              transitionDuration: const Duration(milliseconds: 200),
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const HomeScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                    const begin = Offset(-1.0, 0.0);
+                    const end = Offset.zero;
+                    const curve =
+                        Curves.easeOutCubic; // Smooth decelerating curve
 
-                            var tween = Tween(
-                              begin: begin,
-                              end: end,
-                            ).chain(CurveTween(curve: curve));
-                            var offsetAnimation = animation.drive(tween);
+                    var tween = Tween(
+                      begin: begin,
+                      end: end,
+                    ).chain(CurveTween(curve: curve));
+                    var offsetAnimation = animation.drive(tween);
 
-                            return SlideTransition(
-                              position: offsetAnimation,
-                              child: child,
-                            );
-                          },
-                    ),
-          )
-
-          ,
+                    return SlideTransition(
+                      position: offsetAnimation,
+                      child: child,
+                    );
+                  },
+            ),
+          ),
         ),
         title: const Text(
           "Profile",

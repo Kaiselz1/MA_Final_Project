@@ -5,9 +5,14 @@ import 'package:pos_lab/controllers/main_controller.dart';
 import 'package:pos_lab/screens/cart_screen.dart';
 import 'package:pos_lab/screens/category_screen.dart';
 import 'package:pos_lab/screens/favorite_screen.dart';
-import 'package:pos_lab/screens/history_screen.dart';
 import 'package:pos_lab/screens/home_screen.dart';
+import 'package:pos_lab/screens/transaction_history_screen.dart';
+import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/style/color.dart';
+import 'package:pos_lab/widgets/header_widget.dart';
+import 'package:pos_lab/widgets/search_widget.dart'; // Ensure this import exists
+import 'package:pos_lab/models/user_profile.dart';
+import 'package:pos_lab/repositories/user_repo.dart';
 
 class NavWiget extends StatefulWidget {
   const NavWiget({super.key});
@@ -32,7 +37,6 @@ class _NavWigetState extends State<NavWiget> {
           children: const [
             HomeScreen(),
             CartScreen(),
-            HistoryScreen(),
             FavoriteScreen(),
             CategoryScreen(),
           ],

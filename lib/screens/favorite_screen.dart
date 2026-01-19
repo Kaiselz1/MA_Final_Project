@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_lab/controllers/counter_controller.dart';
-import 'package:pos_lab/screens/setting_screen.dart';
+
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
 import 'package:flutter/foundation.dart';

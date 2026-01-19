@@ -2,7 +2,7 @@ name: pos_lab
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -33,7 +33,12 @@ dependencies:
   device_preview: ^1.3.1
   lottie: ^3.3.2
   flutter_svg: ^2.1.0
+<<<<<<< HEAD
   carousel_slider: ^5.0.0
+=======
+  http: ^1.1.0
+  shared_preferences: ^2.2.2
+>>>>>>> f1cca9fd82421c0d7d7f572e4b118538b6033910
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -71,7 +76,8 @@ flutter:
     - assets/images/sliders/
     - assets/images/
     - assets/icons/
- 
+    - assets/lottie/
+
   fonts:
     - family: Tripsans
       fonts:
@@ -82,8 +88,6 @@ flutter:
     - family: ButterChicken
       fonts:
         - asset: assets/fonts/BUTTER-CHICKEN.OTF
-
-
 
   # To add assets to your application, add an assets section, like this:
 

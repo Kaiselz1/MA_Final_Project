@@ -9,6 +9,13 @@ import 'package:pos_lab/enum/theme_mode.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/utils/translate.dart';
 import 'package:pos_lab/widgets/nav_wiget.dart';
+import 'package:get/get.dart';
+import 'package:pos_lab/screens/splash_screen.dart';
+import 'package:pos_lab/screens/login_screen.dart';
+import 'package:pos_lab/screens/register_screen.dart';
+import 'package:pos_lab/style/color.dart';
+import 'package:pos_lab/widgets/nav_wiget.dart';
+import 'dart:async';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
