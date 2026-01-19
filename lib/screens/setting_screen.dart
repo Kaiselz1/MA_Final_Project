@@ -192,10 +192,29 @@ class _SettingScreenState extends State<SettingScreen> {
               const Divider(height: 20),
 
               // --- Contact Info Section ---
-              _buildContactItem(Icons.telegram, "095 445 770"),
-              _buildContactItem(Icons.phone, "095 445 770"),
-              _buildContactItem(Icons.email, "basswalker76@gmail.com"),
-              _buildContactItem(Icons.facebook, "Sokphonai Ny"),
+              ValueListenableBuilder<UserProfile?>(
+                valueListenable: UserRepo.profileNotifier,
+                builder: (_, user, __) {
+                  if (user == null) {
+                    return Column(
+                      children: [
+                        _buildContactItem(Icons.telegram, "Unknown"),
+                        _buildContactItem(Icons.phone, "Unknown"),
+                        _buildContactItem(Icons.email, "guest@gmail.com"),
+                        _buildContactItem(Icons.facebook, "admin"),
+                      ],
+                    );
+                  }
+                  return Column(
+                    children: [
+                      _buildContactItem(Icons.telegram, user.phone),
+                      _buildContactItem(Icons.phone, user.phone),
+                      _buildContactItem(Icons.email, user.email),
+                      _buildContactItem(Icons.facebook, user.name),
+                    ],
+                  );
+                },
+              ),
 
               const SizedBox(height: 20),
 
