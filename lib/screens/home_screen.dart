@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_lab/controllers/counter_controller.dart';
 import 'package:pos_lab/controllers/product_controller.dart';
+import 'package:pos_lab/dialogs/loading_dialog.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/screens/product_detail_screen.dart';
 import 'package:pos_lab/style/color.dart';
@@ -45,7 +46,14 @@ class _HomeScreenState extends State<HomeScreen>
     }
     super.initState();
     ProductRepo.selectedCategory.value = null; // show all products
-    // fetchProducts();
+
+    ever(productController.isLoading, (loading) {
+      if (loading) {
+        showLoading(context);
+      } else {
+        Navigator.of(context, rootNavigator: true).pop();
+      }
+    });
   }
 
   @override

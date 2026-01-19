@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:pos_lab/api/api_base_url.dart';
+import 'package:pos_lab/api/api_end_point.dart';
 import 'package:pos_lab/models/cart_items.dart';
 import 'package:pos_lab/models/transaction.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/screens/checkout_screen.dart';
 import 'package:pos_lab/screens/setting_screen.dart';
 import 'package:pos_lab/ui_state/ui_status.dart';
+import 'package:http/http.dart' as http;
 
 class CartController extends ChangeNotifier {
   UIStatus status = UIStatus.idle;
@@ -107,7 +112,4 @@ class CartController extends ChangeNotifier {
       ),
     );
   }
-  
-
-  
 }
