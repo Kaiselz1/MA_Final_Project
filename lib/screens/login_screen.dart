@@ -3,6 +3,7 @@ import "package:pos_lab/screens/register_screen.dart";
 import "package:pos_lab/services/auth_service.dart";
 import "package:pos_lab/style/color.dart";
 import "package:pos_lab/widgets/nav_wiget.dart";
+import 'splash_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -64,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // Navigate to home
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const NavWiget()),
+        MaterialPageRoute(builder: (_) => const SplashScreen()),
       );
     } else {
       _showSnackBar(result['message'] ?? 'Login failed', isError: true);

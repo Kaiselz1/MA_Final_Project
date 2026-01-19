@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/services/auth_service.dart';
+import 'package:pos_lab/repositories/user_repo.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -26,6 +27,14 @@ class _SplashScreenState extends State<SplashScreen> {
       if (!mounted) return;
 
       if (isAuthenticated) {
+        try {
+          final token = await AuthService.getToken();
+          if (token != null) {
+            await UserRepo.loadProfile(token);
+          }
+        } catch (e) {
+          print('Error loading profile: $e');
+        }
         // Navigate to home (NavWiget)
         Navigator.of(context).pushReplacementNamed('/home');
       } else {

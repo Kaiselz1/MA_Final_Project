@@ -3,7 +3,7 @@ class ApiEndPoint {
   static const String register = 'auth/register';
   static const String validateToken = '/auth/validate-token';
   static const String logout = '/auth/logout';
-  static const String userProfile = '/auth/me';
+  static const String userProfile = '/auth/profile';
 
   static const String products = '/products/';
   static const String categories = '/categories/';

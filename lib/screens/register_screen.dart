@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pos_lab/screens/home_screen.dart';
 import 'package:pos_lab/screens/login_screen.dart';
+import 'package:pos_lab/screens/splash_screen.dart';
 import 'package:pos_lab/services/auth_service.dart';
 import 'package:pos_lab/style/color.dart';
 
@@ -103,7 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        MaterialPageRoute(builder: (context) => const SplashScreen()),
       );
     } else {
       _showSnackBar(result['message'] ?? 'Registration failed', isError: true);

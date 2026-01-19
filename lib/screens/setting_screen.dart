@@ -208,6 +208,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     onPressed: () {
                       // Call the logout method from AuthService
                       AuthService.logout();
+                      AuthService.deleteToken();
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
