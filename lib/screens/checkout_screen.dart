@@ -126,7 +126,7 @@ class CheckoutScreen extends StatelessWidget {
                               await showSuccess(context, "Payment successful");
 
                               final main = Get.find<MainController>();
-                              main.currentIndex.value = 2;
+                              main.currentIndex.value = 3;
 
                               Navigator.of(context).popUntil((r) => r.isFirst);
                             },
