@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:pos_lab/controllers/category_controller.dart';
 import 'package:pos_lab/controllers/product_controller.dart';
+import 'package:pos_lab/screens/transaction_history_screen.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/nav_wiget.dart';
 import 'package:get/get.dart';
@@ -74,6 +75,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/home': (context) => const NavWiget(),
+        '/transactions': (context) => const TransactionHistoryScreen(),
       },
     );
   }

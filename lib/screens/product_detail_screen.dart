@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pos_lab/controllers/cart_controller.dart';
+import 'package:pos_lab/dialogs/success_dialog.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/style/color.dart';
@@ -248,7 +249,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       children: [
         Expanded(
           child: ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               for (int i = 0; i < quantity; i++) {
                 ProductRepo.addProductToCart(
                   widget.product,
@@ -257,9 +258,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   sugarPercent: sugarVal,
                 );
               }
-              ScaffoldMessenger.of(
+              // ScaffoldMessenger.of(
+              //   context,
+              // ).showSnackBar(const SnackBar(content: Text("Added to cart")));
+              await showSuccess(
                 context,
-              ).showSnackBar(const SnackBar(content: Text("Added to cart")));
+                "$quantity ${widget.product.name}\nAdded to Cart",
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColor.col4,
@@ -281,32 +286,64 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         const SizedBox(width: 10),
 
         Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              for (int i = 0; i < quantity; i++) {
-                ProductRepo.addProductToCart(
-                  widget.product,
-                  size: currentSize,
-                  sweetness: currentSweetness,
-                  sugarPercent: sugarVal,
-                );
-              }
-              controller.proceedToCheckout(context);
+          child: ValueListenableBuilder<int>(
+            valueListenable: ProductRepo.cartVersion,
+            builder: (_, __, ___) {
+              final isEmpty = ProductRepo.cartItems.isEmpty;
+
+              return ElevatedButton(
+                onPressed: isEmpty
+                    ? null
+                    : () {
+                        controller.proceedToCheckout(context);
+                      },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.col5,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  shadowColor: Colors.black38,
+                  minimumSize: const Size(0, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(28),
+                  ),
+                ),
+                child: Text(
+                  isEmpty ? "Cart is empty" : "Check Out",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              );
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.col5,
-              foregroundColor: Colors.white,
-              elevation: 0,
-              shadowColor: Colors.black38,
-              minimumSize: const Size(0, 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(28),
-              ),
-            ),
-            child: const Text(
-              "Check Out",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
+            // child: ElevatedButton(
+            //   onPressed: () {
+            //     // for (int i = 0; i < quantity; i++) {
+            //     //   ProductRepo.addProductToCart(
+            //     //     widget.product,
+            //     //     size: currentSize,
+            //     //     sweetness: currentSweetness,
+            //     //     sugarPercent: sugarVal,
+            //     //   );
+            //     // }
+            //     controller.proceedToCheckout(context);
+            //   },
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: AppColor.col5,
+            //     foregroundColor: Colors.white,
+            //     elevation: 0,
+            //     shadowColor: Colors.black38,
+            //     minimumSize: const Size(0, 40),
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(28),
+            //     ),
+            //   ),
+            //   child: const Text(
+            //     "Check Out",
+            //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            //   ),
+            // ),
           ),
         ),
       ],

@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:pos_lab/api/api_base_url.dart';
+import 'package:pos_lab/api/api_end_point.dart';
+import 'package:pos_lab/controllers/cart_controller.dart';
 import 'package:pos_lab/controllers/main_controller.dart';
 import 'package:pos_lab/dialogs/success_dialog.dart';
 import 'package:pos_lab/models/cart_items.dart';
@@ -8,6 +13,7 @@ import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/header_widget.dart';
 import 'package:pos_lab/widgets/cart_item_tile.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({
@@ -24,6 +30,30 @@ class CheckoutScreen extends StatelessWidget {
   final void Function(CartItem item) onIncrease;
   final void Function(CartItem item) onDecrease;
   final void Function(CartItem item) onDelete;
+
+  Future<void> createOrderDetail() async {
+    try {
+      // final payload = {
+      //   "product_name": "Iced Latte", // fake product ID
+      //   "size": "Medium",
+      //   "quantity": 2,
+      //   "total_price": 7.50,
+      // };
+      final response = await http.post(
+        Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.orders),
+        headers: {"accept": "application/json"},
+      );
+      if (response.statusCode == 201) {
+        print("Order detail created successfully.");
+      } else {
+        print(
+          "Failed to create order detail. Status code: ${response.statusCode}",
+        );
+      }
+    } catch (e) {
+      print("API error: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +151,8 @@ class CheckoutScreen extends StatelessWidget {
                                 status: TransactionStatus.paid,
                               );
 
+                              await createOrderDetail();
+
                               ProductRepo.clearCart();
 
                               await showSuccess(context, "Payment successful");
@@ -128,7 +160,10 @@ class CheckoutScreen extends StatelessWidget {
                               final main = Get.find<MainController>();
                               main.currentIndex.value = 2;
 
-                              Navigator.of(context).popUntil((r) => r.isFirst);
+                              // Navigator.of(context).popUntil((r) => r.isFirst);
+                              Navigator.of(context).popUntil(
+                                (route) => route.settings.name == '/home',
+                              );
                             },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColor.col4,
