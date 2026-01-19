@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:pos_lab/api/api_base_url.dart';
+import 'package:pos_lab/controllers/favorite_controller.dart';
+import 'package:get/get.dart';
 
 class AuthService {
   static const String baseUrl = ApiBaseUrl.baseUrl;
@@ -175,6 +177,9 @@ class AuthService {
     } catch (e) {
       print('Logout error: $e');
     } finally {
+      // Clear favorite controller data
+      FavoriteController fav = Get.find();
+      fav.clearOnLogout();
       // Call to delete the token from storage
       await deleteToken();
     }

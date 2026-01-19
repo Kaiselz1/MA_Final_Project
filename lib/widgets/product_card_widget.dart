@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/style/color.dart';
+import 'package:pos_lab/controllers/favorite_controller.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -11,6 +13,8 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final favoriteController = Get.find<FavoriteController>();
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -45,18 +49,39 @@ class ProductCard extends StatelessWidget {
                 Positioned(
                   top: 8,
                   right: 8,
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Colors.white38,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      CupertinoIcons.heart_fill,
-                      size: 20,
-                      color: Colors.red,
-                    ),
-                  ),
+                  child: Obx(() {
+                    final isFavorite = favoriteController.isFavorite(
+                      product.id,
+                    );
+
+                    return GestureDetector(
+                      onTap: () =>
+                          favoriteController.toggleFavorite(product.id),
+                      child: TweenAnimationBuilder<double>(
+                        tween: Tween(begin: 1.0, end: isFavorite ? 1.2 : 1.0),
+                        duration: const Duration(milliseconds: 200),
+                        builder: (context, scale, child) {
+                          return Transform.scale(
+                            scale: scale,
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: Colors.white38,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                isFavorite
+                                    ? CupertinoIcons.heart_fill
+                                    : CupertinoIcons.heart,
+                                size: 20,
+                                color: isFavorite ? Colors.red : Colors.white,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }),
                 ),
               ],
             ),

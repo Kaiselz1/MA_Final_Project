@@ -154,6 +154,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (!ok) return;
 
     final profile = UserProfile(
+      id: _originalProfile.id,
       name: _nameCtrl.text.trim(),
       email: _emailCtrl.text.trim(),
       phone: _phoneCtrl.text.trim(),

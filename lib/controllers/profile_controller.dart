@@ -18,7 +18,7 @@ class ProfileController extends ChangeNotifier {
   // Get profile from UserRepo
   UserProfile get profile =>
       UserRepo.profile ??
-      UserProfile(name: '', email: '', phone: '', address: '');
+      UserProfile(id: 0, name: '', email: '', phone: '', address: '');
 
   void resetStatus() {
     _status = UIStatus.idle;

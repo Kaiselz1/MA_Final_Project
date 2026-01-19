@@ -7,147 +7,87 @@ import 'package:pos_lab/models/product.dart';
 import 'package:pos_lab/repositories/product_repo.dart';
 import 'package:pos_lab/style/color.dart';
 import 'package:pos_lab/widgets/category_card.dart';
+import 'package:pos_lab/widgets/main_layout.dart';
 
 class CategoryScreen extends StatefulWidget {
-  const CategoryScreen({super.key});
+  const CategoryScreen({Key? key}) : super(key: key);
 
   @override
-  State<CategoryScreen> createState() => _CategoryScreen();
+  State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
-class _CategoryScreen extends State<CategoryScreen> {
-  Set<int> favoriteIds = {};
+class _CategoryScreenState extends State<CategoryScreen> {
   String _selectedCategoryPath = "category";
-  bool isLoading = true;
-  List<Category> categories = [];
-
   final CategoryController categoryController = Get.put(CategoryController());
-  // List<Category> categories = [
-  //   {"name": "Iced Coffee", "icon": "assets/icons/iced_coffee.svg"},
-  //   {"name": "Hot Coffee", "icon": "assets/icons/hot_coffee.svg"},
-  //   {"name": "Hot Drink", "icon": "assets/icons/hot_drink.svg"},
-  //   {"name": "Iced Drink", "icon": "assets/icons/iced_drink.svg"},
-  //   {"name": "Frappuccino", "icon": "assets/icons/frappuccino.svg"},
-  //   {
-  //     "name": "Food & Snacks",
-  //     "icon": "assets/icons/food_snack.svg",
-  //   }, // Name matches ProductRepo
-  // ];
-
-  void addToFavorite(Product product) async {
-    setState(() {
-      if (favoriteIds.contains(product.id)) {
-        favoriteIds.remove(product.id);
-      } else {
-        favoriteIds.add(product.id);
-      }
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // fetchCategories();
-  }
-
-  // Future<void> fetchCategories() async {
-  //   try {
-  //     final response = await http.get(
-  //       Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.categories),
-  //       headers: {"accept": "application/json"},
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       final List data = jsonDecode(response.body);
-  //       setState(() {
-  //         categories = data.map((e) => Category.fromJson(e)).toList();
-  //         debugPrint("Grid received ${categories.length} categories");
-  //         isLoading = false;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     debugPrint("API error: $e");
-  //     setState(() => isLoading = false);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.col8,
-
-      body: Stack(
+    return MainLayout(
+      child: Column(
         children: [
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.find<MainController>().currentIndex.value = 0;
-                      },
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        size: 20,
-                        color: AppColor.col5,
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        "home",
-                        style: TextStyle(color: Colors.black45, fontSize: 16),
-                      ),
-                    ),
-                    Text(
-                      " / ",
-                      style: TextStyle(color: Colors.black45, fontSize: 16),
-                    ),
-                    Text(
-                      _selectedCategoryPath,
-                      style: TextStyle(
-                        color: AppColor.col5,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // ================= Body =================
-              Expanded(
-                child: GridView.builder(
-                  padding: const EdgeInsets.all(20),
-                  itemCount: categoryController.categories.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 15,
-                    crossAxisSpacing: 15,
-                    childAspectRatio: 1.0,
-                  ),
-                  itemBuilder: (context, index) {
-                    final category = categoryController.categories[index];
-                    return CategoryCard(
-                      title: category.name,
-                      iconPath: category.imageUrl,
-                      onTap: () {
-                        // Update selected category
-                        ProductRepo.selectedCategory.value = category.name;
-                        // Go back to home screen
-                        Navigator.pop(context);
-                      },
-                    );
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Get.find<MainController>().currentIndex.value = 0;
+                    Navigator.pop(context);
                   },
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 20,
+                    color: AppColor.col5,
+                  ),
                 ),
+                const SizedBox(width: 5),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    "home",
+                    style: TextStyle(color: Colors.black45, fontSize: 16),
+                  ),
+                ),
+                Text(
+                  " / ",
+                  style: TextStyle(color: Colors.black45, fontSize: 16),
+                ),
+                Text(
+                  _selectedCategoryPath,
+                  style: TextStyle(
+                    color: AppColor.col5,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(20),
+              itemCount: categoryController.categories.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 15,
+                crossAxisSpacing: 15,
+                childAspectRatio: 1.0,
               ),
-            ],
+              itemBuilder: (context, index) {
+                final category = categoryController.categories[index];
+                return CategoryCard(
+                  title: category.name,
+                  iconPath: category.imageUrl,
+                  onTap: () {
+                    ProductRepo.selectedCategory.value = category.name;
+                    Navigator.pop(context);
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
