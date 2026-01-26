@@ -1,7 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:pos_lab/api/api_base_url.dart';
 import 'package:pos_lab/controllers/favorite_controller.dart';
 import 'package:get/get.dart';

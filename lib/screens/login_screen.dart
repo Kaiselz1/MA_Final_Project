@@ -14,10 +14,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _logoMoved = false;
   bool _darkenToTop = false;
-  bool _obscurePassword = true;
+
   bool _rememberMe = false;
   bool _showForm = false;
   bool _isLoading = false;
+  bool _obscurePassword = true;
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -30,9 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _handleLogin() async {
-    debugPrint("LOGIN CLICKED");
-    debugPrint("Email: ${_emailController.text}");
-    debugPrint("Password: ${_passwordController.text}");
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       _showSnackBar('Please enter email and password', isError: true);
       return;
