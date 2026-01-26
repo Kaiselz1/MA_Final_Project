@@ -75,21 +75,21 @@ class AuthService {
   ) async {
     try {
       // Debug mode check (only in debug mode)
-      if (kDebugMode && email == debugEmail && password == debugPassword) {
-        await saveToken('DEBUG_MODE_TOKEN');
-        return {
-          'success': true,
-          'message': 'Debug login successful',
-          'isDebugMode': true,
-        };
-      }
+      // if (kDebugMode && email == debugEmail && password == debugPassword) {
+      //   await saveToken('DEBUG_MODE_TOKEN');
+      //   return {
+      //     'success': true,
+      //     'message': 'Debug login successful',
+      //     'isDebugMode': true,
+      //   };
+      // }
 
       // Regular API login
       final response = await http
           .post(
             Uri.parse('$baseUrl/auth/login'),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: {'username': email, 'password': password},
+            body: {'username': email.trim(), 'password': password},
           )
           .timeout(const Duration(seconds: 10));
 

@@ -30,6 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _handleLogin() async {
+    debugPrint("LOGIN CLICKED");
+    debugPrint("Email: ${_emailController.text}");
+    debugPrint("Password: ${_passwordController.text}");
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       _showSnackBar('Please enter email and password', isError: true);
       return;
@@ -38,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     final result = await AuthService.login(
-      _emailController.text.trim(),
+      _emailController.text.trim().toLowerCase(),
       _passwordController.text,
     );
 
@@ -409,16 +412,17 @@ class _LoginScreenState extends State<LoginScreen> {
             child: ElevatedButton(
               onPressed: _isLoading
                   ? null
-                  : () {
+                  : () async {
                       if (!_showForm) {
                         setState(() {
                           _logoMoved = true;
                           _darkenToTop = true;
                           _showForm = true;
                         });
-                      } else {
-                        _handleLogin();
+                        return;
                       }
+
+                      await _handleLogin();
                     },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColor.col4,
