@@ -124,7 +124,8 @@ class _CartScreenState extends State<CartScreen>
             child: ValueListenableBuilder<int>(
               valueListenable: ProductRepo.cartVersion,
               builder: (_, __, ___) {
-                final items = cartController.items;
+                // final items = cartController.items;
+                final items = ProductRepo.cartItems;
 
                 if (items.isEmpty) {
                   return Center(

@@ -33,19 +33,20 @@ class ProductRepo {
     required String size,
     required String sweetness, // Removed default "standard"
     required String sugarPercent,
+    int qty = 1, // 👈 ADD THIS
   }) {
     final index = cartItems.indexWhere(
       (item) => item.isSameLineAs(product, size, sweetness, sugarPercent),
     );
 
     if (index != -1) {
-      cartItems[index].qty += 1;
+      cartItems[index].qty += qty;
     } else {
       cartItems.add(
         CartItem(
           id: DateTime.now().microsecondsSinceEpoch,
           product: product,
-          qty: 1,
+          qty: qty,
           size: size,
           sweetness: sweetness,
           sugarPercent: sugarPercent,

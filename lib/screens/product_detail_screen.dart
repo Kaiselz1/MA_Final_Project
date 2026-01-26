@@ -276,8 +276,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 widget.product,
                 size: currentSize,
                 sweetness: finalSweetness,
+                
                 sugarPercent:
                     sugarKey, // This is what the CartTile will display
+                qty: quantity, // 👈 Pass the quantity here
               );
 
               await showSuccess(

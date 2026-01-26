@@ -192,11 +192,7 @@ class CheckoutScreen extends StatelessWidget {
 }
 
 class _SummaryRow extends StatelessWidget {
-   _SummaryRow({
-    required this.label,
-    required this.value,
-    this.bold = false,
-  });
+  _SummaryRow({required this.label, required this.value, this.bold = false});
 
   final String label;
   final String value;
@@ -204,7 +200,7 @@ class _SummaryRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     final style = TextStyle(
       fontSize: bold ? 18 : 14,
