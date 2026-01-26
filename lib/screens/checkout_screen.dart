@@ -161,9 +161,9 @@ class CheckoutScreen extends StatelessWidget {
 
                             final main = Get.find<MainController>();
                             main.currentIndex.value = 2;
-                            Navigator.of(
-                              context,
-                            ).popUntil((route) => route.isFirst);
+                            Navigator.of(context).popUntil(
+                              (route) => route.settings.name == '/home',
+                            );
                           },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColor.col4,

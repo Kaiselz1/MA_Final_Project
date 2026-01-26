@@ -15,7 +15,7 @@ class ProductGrid extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 17, vertical: 8),
       crossAxisSpacing: 5,
       mainAxisSpacing: 5,
-      childAspectRatio: 0.71, //change for better looking UI
+      childAspectRatio: 0.70, //change for better looking UI
       // primary: true,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
