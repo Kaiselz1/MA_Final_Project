@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     final result = await AuthService.login(
-      _emailController.text.trim().toLowerCase(),
+      _emailController.text,
       _passwordController.text,
     );
 

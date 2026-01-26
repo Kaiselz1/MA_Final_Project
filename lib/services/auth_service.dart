@@ -89,7 +89,7 @@ class AuthService {
           .post(
             Uri.parse('$baseUrl/auth/login'),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: {'username': email.trim(), 'password': password},
+            body: {'username': email, 'password': password},
           )
           .timeout(const Duration(seconds: 10));
 
